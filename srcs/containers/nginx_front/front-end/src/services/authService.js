@@ -26,13 +26,7 @@ export async function Register(username, password, email) {
     credentials: "include"
   })
 
-  //DEBUG
-  // console.log("BASE URL =", baseUrl)
-  // console.log("FETCH TYPE:", typeof fetch)
-
   const respond = await res.json()
-
-  // console.log(respond)
 
   if (!res.ok) {
     throw new Error(respond.message)
@@ -293,15 +287,20 @@ export async function DeleteUserId(userId) {
   const res = await fetch(`${baseUrl}/api/users/${userId}`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
-    credentials: "include"
+    credentials: "include",
+    body: JSON.stringify({})
   })
 
-  const respond = await res.json()
-  console.log("respond DeleteUser", respond)
+  // const respond = await res.json()
 
   if (!res.ok) {
-    throw new Error(respond.message)
-  }
-  return respond
+    let errMsg = "Delete failed";
+    try {
+      const errorData = await res.json();
+      errMsg = errorData.message || errMsg;
+    } catch(e) {}
+    throw new Error(errMsg);
+  } 
+  return 
 }
 

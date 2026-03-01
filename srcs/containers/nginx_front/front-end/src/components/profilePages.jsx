@@ -176,39 +176,10 @@ export function ChangePassword({setScreenProfile}){
 }
 
 
-export function DeleteAccount({setScreenProfile}){
-    const {userId} = useAuth()
+// export function DeleteAccount({setScreenProfile}){
+//     const {userId} = useAuth()
 
-    const handleDeleteAccount = async () => {
-        try {
-            await DeleteUserId(userId)
-            AlertMessage.fire({
-                icon: "success",
-                text: "Account deleted!",
-        })
-        // setData(prev => ({
-        //         ...prev,
-        //         username: username})
-        //     )
-
-        //--> borrar el cookie
-        setScreenProfile("playNC")
-        
-        } catch(err) {
-            AlertMessage.fire({
-            icon: "error",
-            text: err.message,
-            })
-        }
-    }
-
-    return(
-        OptionAlert.fire({
-            icon: "question",
-            text: "Are you sure you want to delete your account?"
-        })
-    )
-}
+// }
 
 
 export function ChangeAvatar({setData, setScreenProfile}){
@@ -264,10 +235,6 @@ export function ChangeAvatar({setData, setScreenProfile}){
             ...prev,
             avatar: avatar})
         )
-
-        console.log("avatar:", avatar)
-
-
         setScreenProfile("profile")
     
         } catch (error) {
@@ -330,6 +297,44 @@ export function UserData({data, setScreenProfile}){
     if(!data)
         return <div>Loading...</div>
 
+    const handleDeleteAccount = async () => {
+        try {
+            const result = await OptionAlert.fire({
+                icon: "question",
+                text: "Are you sure you want to delete your account?",
+                showCancelButton: true, 
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+            })
+
+            if (result.isConfirmed) {
+                await DeleteUserId(data.id)
+
+                await AlertMessage.fire({
+                    icon: "success",
+                    text: "Account deleted!"})
+
+            //     const res = await fetch('/api/auth/logout', {
+            //         method: 'POST',
+            //         credentials: 'include'
+            //     })
+            // if (!res.ok)
+            //     throw new Error('Logout failed')
+            setScreenProfile("playNC")
+
+            } else if (result.isDismissed) {
+                await AlertMessage.fire({
+                    icon: "info",
+                    text: "Request cancelled!"})
+            }
+        
+        } catch(err) {
+            await AlertMessage.fire({
+                icon: "error",
+                text: err.message})
+        }
+    }
+
     const date = DisplayDate(data.created_at)
 
     return(
@@ -343,13 +348,77 @@ export function UserData({data, setScreenProfile}){
             </div>
             <div className="flex gap-x-2 items-center">
                 <Sixtyfour children={data.email} onClick={null} />
-                {/* <ChopstickButton text="Change email" onClick={() =>setScreenProfile("email")}/> */}
             </div>
             <Sixtyfour children={`Player since ${date}`} onClick={null} />
             <button className="pt-3" >
                 <Sixtyfour children="Change password" onClick={() =>setScreenProfile("password")} className="hover:text-red-900" />
-                <Sixtyfour children="Delete account" onClick={() =>setScreenProfile("delete")} className="hover:text-red-900" />
             </button>
+            <button >
+                <Sixtyfour children="Delete account" onClick={handleDeleteAccount} className="hover:text-red-900" />
+            </button>
+        </div>
+    )
+} 
+
+
+export function ChangeInfo({setData, setScreenProfile}){
+    const [info, setInfo] = useState("")
+    const {userId} = useAuth()
+
+    const handleChangeInfo = async () => {
+        if (!info)
+            throw new Error("All fields are required")
+        
+        if (info.length < 3 || info.length > 300)
+            throw new Error("Your bio must contain between 3 and 300 characters")
+        
+        // await patchChangeUsername(userId, userName)
+    }
+
+    return(
+        <div className="flex flex-col relative w-full h-full justify-center items-center">
+            <Circle className="bg-shell border-2 border-greyish px-10">
+                <div className="flex flex-col pt-4 md:pt-0 lg:pt-6 xl:gap-2 justify-center items-center">
+                    <form
+                        onSubmit={async (e) => {
+                        e.preventDefault()
+                        try {
+                            await handleChangeInfo()
+                            AlertMessage.fire({
+                                icon: "success",
+                                text: "Info changed!",
+                            })
+                        setData(prev => ({
+                            ...prev,
+                            bio: info})
+                        )
+                        setScreenProfile("profile")
+                        }
+                        catch(err) {
+                            AlertMessage.fire({
+                            icon: "error",
+                            text: err.message,
+                            })
+                        }
+                        }}
+                        className="
+                            relative flex flex-col
+                            justify-center
+                            items-center
+                            h-full w-full"
+                    >
+                        <LogInInput
+                            placeholder="Please express yourself here.."
+                            value={info}
+                            onChange={(e) => setInfo(e.target.value)}
+                            className="!absolute !h-[90%] !w-[90%] !rounded-full text-center"
+                        />
+                        <button type="submit" className="">
+                            <IconText text="Confirm change" className="opacity-100 cursor-pointer" />
+                        </button>
+                    </form>
+                </div>
+            </Circle>
         </div>
     )
 }
@@ -370,7 +439,6 @@ export function Profile(){
     }, [userId])
 
     if (!data) return <div>Loading...</div>
-    console.log("PROFILE: avatar= ", data.avatar)
     
     return(
         <div className="flex flex-col relative w-full h-full justify-center items-center">       
@@ -386,13 +454,13 @@ export function Profile(){
                         <IconText text={"Change Avatar"} />
                     </div>
                 </button>
-                <UserData data={data} setScreenProfile={setScreenProfile}/>
+                <UserData data={data} setScreenProfile={setScreenProfile} />
             </div>
             <div className="relative z-10 flex justify-center items-center mt-3 sm:mt-10">
                 <div className="flex border rounded-xl border-greyish px-5 py-3 sm:p-5 items-start mx-16" >
                     <Sixtyfour children={data.bio}  onClick={null}
                         className="flex-1 text-[0.5rem] sm:text-[0.6rem]" />
-                    <ChopstickButton text="Change bio" onClick={() =>setScreenProfile("infos")}/>
+                    <ChopstickButton text="Change bio" onClick={() =>setScreenProfile("info")}/>
                 </div>
             </div>
             {screenProfile === "avatar" && (
@@ -410,9 +478,9 @@ export function Profile(){
                     <ChangePassword setScreenProfile={setScreenProfile}/>
                 </OverlayPage>    
             )}
-            {screenProfile === "delete" && (
+            {screenProfile === "info" && (
                 <OverlayPage onClose={() => setScreenProfile("profile")}> 
-                    <DeleteAccount setScreenProfile={setScreenProfile}/>
+                    <ChangeInfo setScreenProfile={setScreenProfile}/>
                 </OverlayPage>    
             )}
         </div>
