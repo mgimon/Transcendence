@@ -11,7 +11,7 @@ const app = Fastify({
 // la opcion 'trustproxy: true' confia que el proxy(nginx o vite) viene con https
 
 app.register(rateLimit, {
-  max: 100,               // máximo 100 requests
+  max: 200,               // máximo 100 requests
   timeWindow: "1 minute", // por minuto
 });
 

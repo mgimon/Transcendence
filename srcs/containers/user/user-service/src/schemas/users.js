@@ -239,7 +239,7 @@ const updateUserById = {
               type: "string",
               enum: avatarImages
             },
-            bio: { type: 'string', minLength: 3, maxLength: 200 }
+            bio: { type: 'string', minLength: 3, maxLength:300 }
         },
         additionalProperties: false
       },
