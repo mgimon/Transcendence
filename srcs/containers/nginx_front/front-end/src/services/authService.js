@@ -263,8 +263,6 @@ export async function patchChangeUsername(id, username) {
 
   const respond = await res.json()
 
-  console.log("RESPONSE CHANGE USERNAME= ", respond)
-  
   if (!res.ok) {
     throw new Error(respond.message)
   }
@@ -282,8 +280,23 @@ export async function patchChangePassword(id, password) {
 
   const respond = await res.json()
 
-  console.log("RESPONSE CHANGE PASSWORD= ", respond)
-  
+  if (!res.ok) {
+    throw new Error(respond.message)
+  }
+  return respond
+}
+
+
+export async function patchChangeInfo(id, info) {
+  const res = await fetch(`${baseUrl}/api/users/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ bio: info }),
+    credentials: "include"
+  })
+
+  const respond = await res.json()
+
   if (!res.ok) {
     throw new Error(respond.message)
   }
@@ -312,8 +325,6 @@ export async function DeleteUserId(userId) {
     body: JSON.stringify({})
   })
 
-  // const respond = await res.json()
-
   if (!res.ok) {
     let errMsg = "Delete failed";
     try {
@@ -329,4 +340,3 @@ export async function DeleteUserId(userId) {
 
   return 
 }
-

@@ -1,9 +1,9 @@
 import { CorbenBold , CorbenRegular, Sixtyfour } from "./typography"
 import {IconText, IconsOverlayFrame, ProfilePicture, ChopstickButton, OverlayPage, DisplayDate, LargeButton, DisplayIcon} from "./iconUtils"
 import {useRef, useState, useEffect} from "react"
-import {Circle, LogInInput } from "./circleUtils"
+import {Circle, PlaceholderInput, CirclePlaceholder} from "./circleUtils"
 import {useAuth} from "../services/authProvider"
-import {getUserInfo, uploadAvatarFile, uploadAvatar, patchChangeUsername, patchChangePassword, loginUser, DeleteUserId} from "../services/authService"
+import {getUserInfo, uploadAvatarFile, uploadAvatar, patchChangeUsername, patchChangePassword, patchChangeInfo, loginUser} from "../services/authService"
 import { AlertMessage, OptionAlert } from "../services/alertMessage"
 
 
@@ -49,13 +49,11 @@ export function ChangeName({setData, setScreenProfile}){
                         )
                         setUsername(userName)
                         
-                        //--> cambia el nombre en la cookie
                         await fetch(`/api/auth/update/${userName}`, {
                             method: 'POST',
                             credentials: 'include'
                         })
-                        //--> end cambia el nombre en la cookie
-
+ 
                         setScreenProfile("profile")
                         }
                         catch(err) {
@@ -72,13 +70,13 @@ export function ChangeName({setData, setScreenProfile}){
                             h-full w-full
                             gap-2 md:gap-4"
                     >
-                        <LogInInput
+                        <PlaceholderInput
                             placeholder="New Username"
                             value={userName}
                             onChange={(e) => setUserName(e.target.value)}
                             className="!static"
                         />
-                        <LogInInput
+                        <PlaceholderInput
                             placeholder="New Username confirmation"
                             value={repeatUsername}
                             onChange={(e) => setRepeatUsername(e.target.value)}
@@ -152,21 +150,21 @@ export function ChangePassword({setScreenProfile}){
                             h-full w-full
                             gap-2 md:gap-4"
                     >
-                        <LogInInput
+                        <PlaceholderInput
                             type="password" 
                             placeholder="Actual Password"
                             value={actualPassword}
                             onChange={(e) => setActualPassword(e.target.value)}
                             className="!static"
                         />
-                        <LogInInput
+                        <PlaceholderInput
                             type="password" 
                             placeholder="New Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             className="!static"
                         />
-                        <LogInInput
+                        <PlaceholderInput
                             type="password"
                             placeholder="New Password confirmation"
                             value={repeatPassword}
@@ -182,12 +180,6 @@ export function ChangePassword({setScreenProfile}){
         </div>
     )
 }
-
-
-// export function DeleteAccount({setScreenProfile}){
-//     const {userId} = useAuth()
-
-// }
 
 
 export function ChangeAvatar({setData, setScreenProfile}){
@@ -304,8 +296,8 @@ export function ChangeAvatar({setData, setScreenProfile}){
 export function UserData({data, setScreenProfile, setScreen}){
     const {setUserId, userId, setUsername, deleteUser} = useAuth()
 
-    if (!userId) return; // si pas connecté, on ne fetch pas
-      //checker si un UserId sinon profil deconnecte, faire sur chaque page ce check!!!
+    if (!userId) return
+      //TO DO checker si un UserId sinon profil deconnecte, faire sur chaque page ce check!!!
 
     if(!data)
         return <div>Loading...</div>
@@ -374,7 +366,7 @@ export function ChangeInfo({setData, setScreenProfile}){
         if (info.length < 3 || info.length > 300)
             throw new Error("Your bio must contain between 3 and 300 characters")
         
-        // await patchChangeUsername(userId, userName)
+        await patchChangeInfo(userId, info)
     }
 
     return(
@@ -409,13 +401,13 @@ export function ChangeInfo({setData, setScreenProfile}){
                             items-center
                             h-full w-full"
                     >
-                        <LogInInput
+                        <CirclePlaceholder
                             placeholder="Please express yourself here.."
                             value={info}
-                            onChange={(e) => setInfo(e.target.value)}
-                            className="!absolute !h-[90%] !w-[90%] !rounded-full text-center"
+                            onChange={(e) => setInfo(e.target.value.slice(0,300))}
+                            className="!static"
                         />
-                        <button type="submit" className="">
+                        <button type="submit" className="absolute bottom-[8%] z-20">
                             <IconText text="Confirm change" className="opacity-100 cursor-pointer" />
                         </button>
                     </form>
@@ -461,7 +453,7 @@ export function Profile({setScreen}){
             <div className="relative z-10 flex justify-center items-center mt-3 sm:mt-10">
                 <div className="flex border rounded-xl border-greyish px-5 py-3 sm:p-5 items-start mx-16" >
                     <Sixtyfour children={data.bio}  onClick={null}
-                        className="flex-1 text-[0.5rem] sm:text-[0.6rem]" />
+                        className="flex-1 min-w-0 text-[0.5rem] sm:text-[0.6rem] whitespace-pre-wrap break-word [word-break:break-word]" />
                     <ChopstickButton text="Change bio" onClick={() =>setScreenProfile("info")}/>
                 </div>
             </div>
@@ -482,7 +474,7 @@ export function Profile({setScreen}){
             )}
             {screenProfile === "info" && (
                 <OverlayPage onClose={() => setScreenProfile("profile")}> 
-                    <ChangeInfo setScreenProfile={setScreenProfile}/>
+                    <ChangeInfo setData={setData} setScreenProfile={setScreenProfile}/>
                 </OverlayPage>    
             )}
         </div>

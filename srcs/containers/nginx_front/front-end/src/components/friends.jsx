@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { useAuth } from "../services/authProvider.jsx"
 import { getFriends, getUsers, getUserInfo, getFriendsPending, getFriendsToRespond, cancelFriendship, acceptFriendship, newFriendship, getUserByUsername } from "../services/authService.js"
 import { ProfilePicture, IconText, IconsOverlayFrame, OverlayPage, DisplayIcon, LargeButton} from "./iconUtils.jsx"
-import { Circle, LogInInput } from './circleUtils.jsx'
+import { Circle, PlaceholderInput } from './circleUtils.jsx'
 import { AlertMessage, OptionAlert } from "../services/alertMessage"
 import { Sixtyfour, P, H2, H3, LI, UL, CorbenRegular } from "./typography"
 
@@ -181,7 +181,7 @@ function AddFriend({setScreenProfile}) {
                   h-full w-full
                   gap-2 md:gap-4"
             >
-            <LogInInput
+            <PlaceholderInput
                   type="text" 
                   placeholder="Type your friend's username"
                   
