@@ -104,11 +104,27 @@ function AddFriend({setScreenProfile}) {
   try {
     e.preventDefault() // evita que se recargue la página
     if (username.trim() !== "") {
-      const user = await getUserByUsername(username.trim()) 
+      const user = await getUserByUsername(username.trim())
+
+      const data = await newFriendship(userId, user.id)
+
+     // setFriends(prev => prev.filter(friend => friend.id !== friendId))
+      //setPending(prev => prev.filter(friend => friend.id !== friendId))
+      //setRequests(prev => prev.filter(friend => friend.id !== friendId))   
+
+      AlertMessage.fire({
+        icon: "success",
+        text: "You send a new friend request!",
+      })
+
+
     }
     setScreenProfile("friends")
   } catch (error) {
-    
+    AlertMessage.fire({
+        icon: "error",
+        text: error.message,
+      })
 }
 
     
