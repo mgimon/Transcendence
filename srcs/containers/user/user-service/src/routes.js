@@ -10,6 +10,7 @@ const routes = async function(fastify, options) {
     fastify.get('/', { schema: userSchema.getAllUsers }, userHandler.getAllUsers)
     fastify.post('/', { schema: userSchema.postUser }, userHandler.postUser)
     fastify.get('/:userId', { schema: userSchema.getUserById, preHandler: preHandler.verifySession}, userHandler.getUserById)
+    fastify.get('/username/:username', { schema: userSchema.getUserByName, preHandler: preHandler.verifySession}, userHandler.getUserByName)
     fastify.post('/user/login', { schema: userSchema.tryLogin }, userHandler.tryLogin)
     fastify.post('/user/logout', { schema: userSchema.logOut }, userHandler.logOut)
     fastify.post('/user/connect', { schema: userSchema.connect }, userHandler.connect)

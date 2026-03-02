@@ -123,7 +123,7 @@ const getUserById = {
         401: errorResponse,
         404: errorResponse
     }
-};
+}
 
 const getAvatarById = {
     description: 'Get avatar by id',

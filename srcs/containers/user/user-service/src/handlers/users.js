@@ -81,7 +81,7 @@ async function getUserByName(req, reply) {
 
     try {
         const result = await query.getUserByName(username)
-        if (user === null) userNotFoundError()
+        if (result === null) userNotFoundError()
         reply.code(200).send(result)
     } catch (error) {
         reply.send(error)

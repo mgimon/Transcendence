@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react"
 import { useAuth } from "../services/authProvider.jsx"
-import { getFriends, getUserInfo, getFriendsPending, getFriendsToRespond, cancelFriendship, acceptFriendship, newFriendship } from "../services/authService.js"
-import { ProfilePicture, IconText, IconsOverlayFrame } from "./iconUtils.jsx"
+import { getFriends, getUsers, getUserInfo, getFriendsPending, getFriendsToRespond, cancelFriendship, acceptFriendship, newFriendship, getUserByUsername } from "../services/authService.js"
+import { ProfilePicture, IconText, IconsOverlayFrame, OverlayPage, DisplayIcon, LargeButton} from "./iconUtils.jsx"
+import { Circle, LogInInput } from './circleUtils.jsx'
 import { AlertMessage, OptionAlert } from "../services/alertMessage"
-import { Sixtyfour, P, H2, H3, LI, UL } from "./typography"
+import { Sixtyfour, P, H2, H3, LI, UL, CorbenRegular } from "./typography"
 
  function Button({text, onClick, src}){
     return(
@@ -16,7 +17,7 @@ import { Sixtyfour, P, H2, H3, LI, UL } from "./typography"
     )
 }
 
-function Card({ friends, buttonText, onDelete, onAccept, children }) {
+function Card({ friends, buttonText, onDelete, onAccept, children, setScreenProfile }) {
 
   return (
     <div className="rounded-2xl p-6 text-center border rounded-xl border-greyish overflow-y-auto overflow-x-hidden">
@@ -26,7 +27,8 @@ function Card({ friends, buttonText, onDelete, onAccept, children }) {
       {(children === "Friends list") && ( <Button
               className="absolute right-0"
               text="Add friend"
-              onClick={() => onAccept(21)}
+              // onClick={() => onAccept(21)}
+              onClick={() =>setScreenProfile("addFriend")}
               src="/validation_icons/+_bold_cut_yellow.svg"
              /> )} 
     </div>
@@ -62,6 +64,119 @@ function Card({ friends, buttonText, onDelete, onAccept, children }) {
       })}
     </div>
   );
+}
+
+function AddFriend({setScreenProfile}) {
+    const { userId } = useAuth()
+
+  const [avatar, setAvatar] = useState(null)
+  const [friend, setFriend] = useState(null)
+  const [users, setUsers] = useState([])
+
+  // useEffect(() => {
+  //   async function fetchUsers() {
+  //     try {
+  //       const allUsers = await getUsers()
+  //       const filtered = allUsers.filter( user => user.id !== userId)
+
+  //       const shuffled = [...filtered]
+  //       for (let i = shuffled.length - 1; i > 0; i--) {
+  //         const j = Math.floor(Math.random() * (i + 1));
+  //         [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  //       }
+
+  //       const randomSeven = shuffled.slice(0, 7)
+
+  //       setUsers(randomSeven)
+  //       console.log(users)
+
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
+
+  //   fetchUsers()
+
+  // }, [])
+  const [username, setUsername] = useState("");
+
+  const handleSubmit = async (e) => {
+  try {
+    e.preventDefault() // evita que se recargue la página
+    if (username.trim() !== "") {
+      const user = await getUserByUsername(username.trim()) 
+    }
+    setScreenProfile("friends")
+  } catch (error) {
+    
+}
+
+    
+  };
+
+
+
+  
+  return(
+    <div className="flex flex-col relative w-full h-full justify-center items-center">
+      <Circle className="bg-shell border-2 border-greyish px-10">
+        <div className="flex flex-col pt-4 md:pt-0 lg:pt-6 xl:gap-2 justify-center items-center">
+          {/* <div className="flex gap-1 md:gap-2">
+            {users.slice(0, 3).map(user => (
+              <div key={user.id} className="flex flex-col items-center w-20">
+                <P>{user.username}</P>
+                <DisplayIcon
+                  children={user.avatar}
+                  setAvatar={setAvatar}
+                />
+              </div>
+            ))}
+          </div>
+          <div className="flex gap-1 md:gap-2 md:pb-4 lg:pb-1 xl:pb-4">
+            {users.slice(3, 7).map(user => (
+              <div key={user.id} className="flex flex-col items-center w-20">  
+                <DisplayIcon
+                  children={user.avatar}
+                  setAvatar={setAvatar}
+                />
+                <P>{user.username}</P>
+              </div>
+            ))}
+          </div>
+          <CorbenRegular children="or" className="text-greyish text-xs md:text-base pb-1 md:pb-4 lg:pb-1 xl:pb-4" /> */}
+            {/* {avatar && (
+              <div>
+              <img
+                src={avatar}
+                alt="Preview Avatar"
+                className="mt-2 w-10 h-10 md:mt-3 md:w-24 md:h-24 lg:w-15 lg:h-15 rounded-full object-cover border-2 border-greyish"
+              />
+              </div>
+            )} */}
+            <form
+              onSubmit={handleSubmit}
+              className="
+                  relative flex flex-col
+                  justify-center
+                  items-center
+                  h-full w-full
+                  gap-2 md:gap-4"
+            >
+            <LogInInput
+                  type="text" 
+                  placeholder="Type your friend's username"
+                  
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="!static"
+            />
+            <button type="submit" className="pt-4 md:pt-10">
+                <IconText text="Send invitation" className="opacity-100 cursor-pointer" />
+            </button>
+          </form>
+          </div>
+        </Circle>
+      </div>
+      )
 }
 
 export function Friends({setScreen}) {
@@ -165,6 +280,8 @@ export function Friends({setScreen}) {
     }
   }
 
+  const [screenProfile, setScreenProfile] = useState("friends");
+
   return (
     <div className="flex flex-col relative w-full h-full justify-center items-center min-h-0 ">
       <div className="absolute inset-0">
@@ -176,8 +293,13 @@ export function Friends({setScreen}) {
           <Card friends={ pending } buttonText="Cancel invitation" onDelete={deleteFriendship}>Pending</Card>
         </div>
         <div className="h-full min-h-0 overflow-y-auto overflow-x-hidden">
-          <Card friends={ friends } buttonText="Delete friendship" onDelete={deleteFriendship} onAccept={newFriend}>Friends list</Card>
+          <Card friends={ friends } buttonText="Delete friendship" onDelete={deleteFriendship} onAccept={newFriend} setScreenProfile={setScreenProfile}>Friends list</Card>
         </div>
+        {screenProfile === "addFriend" && (
+          <OverlayPage onClose={() => setScreenProfile("profile")}> 
+            <AddFriend setScreenProfile={setScreenProfile}/>
+          </OverlayPage>    
+        )}
       </div>
     </div>
   )
