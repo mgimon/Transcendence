@@ -122,8 +122,6 @@ async function tryLogin(req, reply) {
 
         if (user.online_status === 1) userConflictError('You are already logged')
 
-        //await query.updateUserById(user.id, { online_status: 1 });
-
         return reply.code(200).send({
             valid: true,
             userId: user.id,

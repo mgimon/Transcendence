@@ -59,7 +59,7 @@ async function login(req, reply) {
 
     if (!username || !password) return reply.code(400).send({ error: 'Invalid credentials' });
 
-    const coincidence = await fetch('https://user-service:3000/user/login',
+    const coincidence = await fetch('https://user-service:3000/user/trylogin',
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-api-key': readSecret(process.env.API_KEY) },
@@ -215,6 +215,9 @@ async function register(req, reply) {
       return reply.code(400).send({ error: 'Invalid credentials' });
     }
 
+    if (checkActiveSession(req))
+      return reply.code(403).send({ error: 'There is an active session' });
+
     // check if mail exists
     const coincidence = await fetch(`https://user-service:3000/user/${email}`, {
       method: 'GET',
@@ -324,6 +327,19 @@ async function updateUsername(req, reply) {
   }
 }
 
+async function activesession(req, reply) {
+  try {
+    const token = req.cookies.access_token;
+
+    if (!token)
+      return reply.code(200).send({ valid: false });
+    else
+      return reply.code(200).send({ valid: true });
+  } catch (err) {
+    return reply.code(400).send({ valid: false, message: "Bad Request" });
+  }
+}
+
 export default {
     readSecret,
     status,
@@ -335,5 +351,6 @@ export default {
     register2FA,
     register,
     validate,
-    updateUsername
+    updateUsername,
+    activesession
 }

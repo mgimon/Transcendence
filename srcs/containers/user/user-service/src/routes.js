@@ -11,7 +11,7 @@ const routes = async function(fastify, options) {
     fastify.post('/', { schema: userSchema.postUser }, userHandler.postUser)
     fastify.get('/:userId', { schema: userSchema.getUserById }, userHandler.getUserById)
     fastify.get('/user/:userMail', { schema: userSchema.userMailExists }, userHandler.userMailExists)
-    fastify.post('/user/login', { schema: userSchema.tryLogin }, userHandler.tryLogin)
+    fastify.post('/user/trylogin', { schema: userSchema.tryLogin }, userHandler.tryLogin)
     fastify.post('/user/logout', { schema: userSchema.logOut }, userHandler.logOut)
     fastify.post('/user/connect', { schema: userSchema.connect }, userHandler.connect)
     fastify.post('/user/disconnect', { schema: userSchema.disconnect }, userHandler.disconnect)

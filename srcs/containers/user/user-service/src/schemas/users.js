@@ -169,9 +169,9 @@ const getUserByName = {
 };
 
 const tryLogin = {
-  description: 'Validate user credentials',
+  description: 'Validate user credentials only',
   tags: ['Users'],
-  summary: 'Credentials validation',
+  summary: 'Backend credentials validation only',
 
     body: {
         type: 'object',
@@ -255,7 +255,7 @@ const logOut = {
 const updateUserById = {
     description: 'Partially update user by id',
     tags: ['Users'],
-    summary: 'update user info',
+    summary: 'Update user info',
 
     body: {
         type: 'object',
@@ -306,7 +306,7 @@ const uploadAvatar = {
   description: 'Upload user avatar by id',
   tags: ['Users'],
   consumes: ['multipart/form-data'], // for swagger only
-  summary: 'upload avatar. delete old avatar if exists',
+  summary: 'Upload avatar. Delete old avatar if exists',
 
   params: paramId,
 
@@ -344,6 +344,9 @@ const deleteAvatar = {
 };
 
 const disconnect = {
+  description: 'Sets online_status to 0',
+  tags: ['Users'],
+  summary: 'Sets online_status to 0 in the backend',
   body: {
     type: "object",
     required: ["userId"],
@@ -354,6 +357,9 @@ const disconnect = {
 };
 
 const connect = {
+  description: 'Sets online_status to 1',
+  tags: ['Users'],
+  summary: 'Sets online_status to 1 in the backend',
   body: {
     type: "object",
     required: ["userId"],
@@ -364,6 +370,9 @@ const connect = {
 };
 
 const userMailExists = {
+  description: 'Verifies if email already exists',
+  tags: ['Users'],
+  summary: 'Checks if an email is already registered in the system',
   params: {
       type: "object",
       required: ['userMail'],
