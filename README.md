@@ -288,12 +288,11 @@ Moreover, if any of the services ever crashes, it only affects a part of the web
 ##### Implementation
 Marta was in charge of creating the set of containers and their correct communication. 
 
-Using Docker and Docker-compose we set up two containers for the front and four in the back.\
+Using Docker and Docker-compose we set up two containers for the front and three in the back.\
 We decided to have an API Gateway with its own container to further tighten security and protect the containers from the front. The Nginx container then only acts as a server of static files and handles the https connection.\
-We distinguish 3 microservices:
+We distinguish 2 microservices:
 - user-service (with its own separate db container)
-- authentication-service
-- game_history-service (with its own separate db container)
+- auth-service
   
 <br>
 
