@@ -174,8 +174,7 @@ We used MariaDB as our relational database.
 - **Docker** for containerization and service orchestration
 - **Nginx** as reverse proxy and static asset server
 - **OpenSSL** for SSL/TLS certificate management
-- **Swagger/OpenAPI 3.0** for comprehensive API documentation
-- **Faker.js** for realistic test data generation
+- **Swagger** for comprehensive API documentation
 - **Nodemon** for hot-reloading during development
 - **ESLint** for code quality
 
