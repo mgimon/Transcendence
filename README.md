@@ -182,23 +182,23 @@ We used MariaDB as our relational database.
 
 ### Justification for Key Technical Choices
 
-- **Microservices Architecture**: Three distinct services (API Gateway, Auth, User) provide separation of concerns, independent scalability, and fault isolation.
+\- **Microservices Architecture**: Three distinct services (API Gateway, Auth, User) provide separation of concerns, independent scalability, and fault isolation.
 
-- **Fastify over Express**: Superior performance benchmarks, built-in validation, and modular plugin architecture makes it ideal for Microservices Architecture. Also, Schemas allowed us to implement the Swagger documentation system.
+\- **Fastify over Express**: Superior performance benchmarks, built-in validation, and modular plugin architecture makes it ideal for Microservices Architecture. Also, Schemas allowed us to implement the Swagger documentation system.
 
-- **React with Vite**: Near-instant hot module replacement during frontend development and optimized production builds.
+\- **React with Vite**: Near-instant hot module replacement during frontend development and optimized production builds.
 
-- **Nodemon**: Near-instant hot reloading during backend development and optimized production builds.
+\- **Nodemon**: Near-instant hot reloading during backend development and optimized production builds.
 
-- **Two-Factor Authentication**: Critical security enhancement requiring both password and email verification.
+\- **Two-Factor Authentication**: Critical security enhancement requiring both password and email verification.
 
-- **Docker Containerization**: Ensures environment consistency, simplifies deployment, and enables horizontal scaling.
+\- **Docker Containerization**: Ensures environment consistency, simplifies deployment, and enables horizontal scaling.
 
-- **JWT Authentication**: Stateless tokens eliminate server-side storage, enabling horizontal scaling and microservice compatibility.
+\- **JWT Authentication**: Stateless tokens eliminate server-side storage, enabling horizontal scaling and microservice compatibility.
 
-- **MariaDB over NoSQL**: Structured relational data, ACID compliance, and complex query capabilities made SQL the right choice.
+\- **MariaDB over NoSQL**: Structured relational data, ACID compliance, and complex query capabilities made SQL the right choice.
 
-- **Tailwind CSS**: Utility-first approach accelerates development, enforces design consistency, and produces minimal production CSS.
+\- **Tailwind CSS**: Utility-first approach accelerates development, enforces design consistency, and produces minimal production CSS.
 
 
 <br>
@@ -231,9 +231,17 @@ In the backend, Manu and Cléo both learned how to use Fastify to create and man
 ###  MAJOR | A public API to interact with the database (2p)
 It has to have a secured API key, ratelimiting, documentation, and at least 5 endpoints.
 
+- Secured with API key authentication for all external requests
+- Rate limiting to prevent abuse
+- Comprehensive Swagger documentation at `/docs` endpoints
+- **20+ RESTful endpoints** covering user management and friendships
+
 Because creating an API was already a necessity, we thought that making it public, well documented and secure would be a plus that would help reinforce the structure we had planned.
+
 ##### Implementation
-We used Swagger to see and test that the endpoints worked correctly. Cléo worked on the user-service endpoints and Manu on the auth-service ones.
+- **Cléo** developed the user-service endpoints with database integration
+- **Manu** implemented the auth-service endpoints for authentication flows
+
 
 <br>
 
@@ -262,11 +270,16 @@ The setup of the game allowed for a lot of customization options that Cristina w
 <br>
 
 ###  MAJOR | Standard user management and authentication (2p)
-This is a basic requierement for any type of website that offers a service. In our case, because we supply an online game, we wanted to make sure that the user can save his games, customize his settings and profile. This can only happen with a user account system.
+We implemented a complete user management system with secure authentication flows, including registration, login, 2FA via email, and profile management. User sessions are handled with JWT tokens stored in HTTP-only cookies for security. The system consists of:
+
+- Registration, login/logout with 2FA email verification
+- Profile management (username, password, avatar, bio)
+- Avatar upload with file validation
+- Account deletion with data cleanup
 
 ##### Implementation
-We made an 'guest' option, as well as a 'log in' or 'register' option when you enter the game. From there there is a form that protected from the front and back that stores the user data so that any stats and user information can live in the our database volumes and be retrieved anytime the user logs in.\
-Cléo made sure this works perfectly.
+**Manu** developed the auth-service with 2FA and JWT logic
+**Cléo** built the user-service endpoints with database integration
 
 <br>
 
@@ -287,10 +300,12 @@ We distinguish 3 microservices:
 <br>
 
 ### MINOR | Implement a complete 2FA system (1p)
-Security is a very important aspect of any website. We knew we wanted to choose either the OAuth module or the Two-Factor Authentication and finally chose the latest.
+We implemented a complete Two-Factor Authentication system using email-based verification. After entering valid credentials, users receive a 6-digit code via email that must be provided to complete login or registration. This adds an essential security layer protecting accounts even if passwords are compromised.
 
 ##### Implementation
-(To be completed by @mgimon)
+- **Manu** integrated Nodemailer with Gmail SMTP to deliver 2FA codes
+- Temporary in-memory storage (`pending2FA` Map) holds codes with 5-minute expiration
+- Codes are required for both `/login/2fa` and `/register/2fa` endpoints before JWT issuance
 
 <br>
 
