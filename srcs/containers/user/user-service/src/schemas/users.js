@@ -363,6 +363,24 @@ const connect = {
   },
 };
 
+const userMailExists = {
+  params: {
+      type: "object",
+      required: ['userMail'],
+      properties: {
+          userMail: { type: 'string' }
+      }
+  },
+  response: {
+      200: {
+          properties: {
+              exists: { type: 'boolean' }
+          }
+      },
+      400: errorResponse
+  }
+}
+
 export default {
     avatarImages,
     getAllUsers,
@@ -378,5 +396,6 @@ export default {
     uploadAvatar,
     deleteAvatar,
     disconnect,
-    connect
+    connect,
+    userMailExists
 }

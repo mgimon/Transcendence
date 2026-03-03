@@ -304,6 +304,15 @@ async function connect(req, reply) {
     }
 }
 
+async function userMailExists(req, reply) {
+    try {
+      const email = decodeURIComponent(req.params.userMail);
+      const exists = await query.userMailExists(email);
+      reply.send({ exists });
+    } catch (error) {
+      reply.code(500).send({ error: 'Internal server error' });
+    }
+  }
   
 
 export default { 
@@ -321,5 +330,6 @@ export default {
     getAvatarById,
     deleteAvatar,
     disconnect,
-    connect
+    connect,
+    userMailExists
 }

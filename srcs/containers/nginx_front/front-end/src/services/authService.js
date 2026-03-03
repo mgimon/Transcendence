@@ -31,10 +31,10 @@ export async function Register(username, password, email) {
 
   const respond = await res.json()
 
-  // console.log(respond)
+   console.log(respond)
 
   if (!res.ok) {
-    throw new Error(respond.message)
+    throw new Error(respond.error)
   }
   return respond
 }

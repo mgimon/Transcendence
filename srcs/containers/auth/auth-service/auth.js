@@ -215,6 +215,18 @@ async function register(req, reply) {
       return reply.code(400).send({ error: 'Invalid credentials' });
     }
 
+    // check if mail exists
+    const coincidence = await fetch(`https://user-service:3000/user/${email}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': readSecret(process.env.API_KEY) }
+    });
+    const response = await coincidence.json();
+    if (!coincidence.ok)
+      return reply.code(coincidence.status).send({ error: "Email check failed" });
+    if (response.exists)
+      return reply.code(409).send({ error: "User email already exists" });
+
+
     const code2FA = Math.floor(100000 + Math.random() * 900000).toString();
     pending2FA.set(username, { 
       code: code2FA,
