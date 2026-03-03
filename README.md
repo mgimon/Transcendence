@@ -114,7 +114,7 @@ In the end we decided to divide it like so:
 - System design and Docker management --- Marta
 - Backend user logic, including database structure --- Cléo
 - Game creation with AI oponent and customization --- Cristina
-- Authorization logic and overall security --- Manu
+- Authentication, sessions and user management system --- Manu
 
 We assigned the biggest tasks of each module and the basic mandatory rules to each member in GitHub's Backlog. We referenced the Github Issues displayed there in our commits.\
 As time went by and the project evolved, we realized how much work the frontend really demanded and how time consuming it was, so, when Cleo finished his part of the backend, he took on the friendship page in the frontend, as well as the Privacy Policy and Terms of Service Page. \
