@@ -149,7 +149,6 @@ export class Game {
 		if (this.totalRoundsOverride != null) {
 			this.roundSystem.setMaxRounds(this.totalRoundsOverride);
 		}
-		console.log("theme game constructor", this.theme);
 		this.renderer = new Renderer(this.ctx, this.canvas.width, this.canvas.height, this.spriteLibrary, this.laneTint, this.theme);
 
 	  
@@ -386,7 +385,6 @@ export class Game {
 		// Switch state - React will handle UI visibility based on state
 		this.state = 'playing';
 		console.log('🎮 Game state changed to:', this.state);
-		console.log('Is touch device:', this.isTouchDevice);
 		// Begin the first round
 		this.roundSystem.startRound();
 		// Show round indicator
@@ -453,6 +451,9 @@ export class Game {
 				if (abilityUsed === 'freeze') {
 					otherPlayer.frozen = true;
 					otherPlayer.freezeTimer = otherPlayer.freezeDuration;
+					// i want to make that the frozen player is blued out and has a snowflake overlay to indicate the effect
+					otherPlayer.snowflakeOverlay = true;
+					otherPlayer.snowflakeOverlayTimer = otherPlayer.snowflakeOverlayDuration;
 				}
 			});
 			
@@ -773,13 +774,10 @@ export class Game {
 		} else {
 			// Reset state and schedule the following round after a short pause
 			this.resetRound();
-			const roundResetDelay = 2000;
-			setTimeout(() => {
-				this.roundSystem.startRound();
-				// Show round indicator
-				this.showRoundIndicator = true;
-				this.roundIndicatorTimer = ROUND_INDICATOR_DURATION;
-			}, roundResetDelay);
+			this.roundSystem.startRound();
+			// Show round indicator
+			this.showRoundIndicator = true;
+			this.roundIndicatorTimer = ROUND_INDICATOR_DURATION;
 		}
 	}
 
@@ -1094,20 +1092,28 @@ export class Game {
 
 		// Controls: left column
 		ctx.font = ROUND_INDICATOR_CONTROLS_SMALL_FONT;
-		ctx.fillText('Move: A/D', leftX, startY + lineH);
-		ctx.fillText('Push: Left Shift', leftX, startY + lineH * 2);
-		ctx.fillText('Dash: Space', leftX, startY + lineH * 3);
-		if (this.abilitiesEnabled) {
-			ctx.fillText('Abilities: 1 / 2 / 3', leftX, startY + lineH * 4);
-		}
+		if (!this.isTouchDevice) {
+			ctx.fillText('Move: A/D', leftX, startY + lineH);
+			ctx.fillText('Push: Left Shift', leftX, startY + lineH * 2);
+			ctx.fillText('Dash: Space', leftX, startY + lineH * 3);
+			if (this.abilitiesEnabled) {
+				ctx.fillText('Abilities: 1 / 2 / 3', leftX, startY + lineH * 4);
+			}
 
-		// Controls: right column
-		ctx.fillText('Move: ←/→', rightX, startY + lineH);
-		ctx.fillText('Push: Right Ctrl', rightX, startY + lineH * 2);
-		ctx.fillText('Dash: Right Shift', rightX, startY + lineH * 3);
-		if (this.abilitiesEnabled) {
-			ctx.fillText('Abilities: Numpad 1 / 2 / 3', rightX, startY + lineH * 4);
+			// Controls: right column
+			ctx.fillText('Move: ←/→', rightX, startY + lineH);
+			ctx.fillText('Push: Right Ctrl', rightX, startY + lineH * 2);
+			ctx.fillText('Dash: Right Shift', rightX, startY + lineH * 3);
+			if (this.abilitiesEnabled) {
+				ctx.fillText('Abilities: Numpad 1 / 2 / 3', rightX, startY + lineH * 4);
+			}
 		}
+		 else {
+			ctx.fillText('Move: Tap in your zone', leftX, startY + lineH);
+			ctx.fillText('Dash: Swipe', leftX, startY + lineH * 2);
+			ctx.fillText('Move: Tap in your zone', rightX, startY + lineH);
+			ctx.fillText('Dash: Swipe', rightX, startY + lineH * 2);
+		 }
 	}
 
 	/**

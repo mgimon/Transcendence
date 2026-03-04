@@ -76,7 +76,6 @@ export class Renderer {
 		this.spriteLibrary = spriteLibrary;
 		this.laneTint = laneTint;
 		this.theme = theme;
-		console.log("theme render constructor", this.theme);
 		// Build in-memory fallback blossom sprites for when none are loaded
 		this.createBlossomSprites();
 	}
@@ -99,7 +98,6 @@ export class Renderer {
 			this.render();
 		}
 	
-		console.log("Renderer theme updated to:", this.theme);
 	}
 	/**
 	 * Creates simple canvas-based sprites for normal and golden blossoms for
@@ -292,6 +290,24 @@ export class Renderer {
 		ctx.restore();
 	}
 
+	renderSnowflakeOverlay(ctx, x, y) {
+		const snowflakeOverlay = this.spriteLibrary?.getSnowflakeOverlay();
+
+		if (snowflakeOverlay) {
+			const bowlRadius = PLAYER_RADIUS;
+			const spriteAspect = (snowflakeOverlay.width && snowflakeOverlay.height) ? (snowflakeOverlay.width / snowflakeOverlay.height) : 1;
+			const drawW = bowlRadius * 2;
+			const drawH = Math.round(drawW / spriteAspect);
+
+			ctx.drawImage(
+				snowflakeOverlay,
+				x - drawW / 2,
+				y - drawH / 2,
+				drawW,
+				drawH
+			);
+		}
+	}
 	renderPerfectMeterBackplate(ctx, centerX, y) {
 		const totalWidth = 200;
 		const height = 100;
@@ -651,6 +667,9 @@ export class Renderer {
 
 			// The bowl is the avatar representation; draw it in place
 			this.drawBowl(drawX, drawY, player.id, player, this.theme);
+			if (player.snowflakeOverlay) {
+				this.renderSnowflakeOverlay(ctx, drawX, drawY);
+			}
 		});
 	}
 
@@ -800,6 +819,9 @@ export class Renderer {
 		} else {
 			bowlColor = playerId === 1 ? BOWL_COLOR_DEFAULT_1 : BOWL_COLOR_DEFAULT_2;
 		}
+		if(player.frozen){
+			ctx.globalAlpha = 0.6;
+		}
 
 		// Drop shadow under the bowl to anchor it to the table
 		ctx.fillStyle = BOWL_SHADOW_COLOR;
@@ -844,13 +866,6 @@ export class Renderer {
 		const perfectHalfWidth = bowlRadius * PERFECT_CATCH_FACTOR;
 		const windowCenterYFactor = theme === "classic" ? 0.45 : 0.45 + 20;
 		const center_Y = -bowlRadius * windowCenterYFactor;
-		// if(theme === "classic"){
-		// 	center_Y = -bowlRadius * BOWL_PERFECT_WINDOW_Y_FACTOR;
-		// } else if(theme === "fishbowl"){
-		// 	center_Y = -bowlRadius * BOWL_PERFECT_WINDOW_Y_FACTOR + 20;
-		// } else if(theme === "sushiland"){
-		// 	center_Y = -bowlRadius * BOWL_PERFECT_WINDOW_Y_FACTOR + 20;
-		// }
 		const perfectHalfHeight = perfectHalfWidth * 0.2;
 		const perfectWindowColor = 'rgba(255, 196, 0, 0.65)';
 		const perfectWindowLineWidth = 3;
@@ -877,6 +892,13 @@ export class Renderer {
 		ctx.textAlign = 'center';
 		ctx.textBaseline = 'middle';
 		ctx.fillText(`P${playerId}`, 0, labelYOffset);
+
+		if (player.frozen) {
+			ctx.fillStyle = "rgba(120,170,255,0.35)";
+			ctx.beginPath();
+			ctx.arc(x, y, PLAYER_RADIUS, 0, Math.PI * 2);
+			ctx.fill();
+		}
 
 		ctx.restore();
 	}

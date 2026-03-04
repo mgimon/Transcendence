@@ -9,6 +9,7 @@ import {
 	ABILITY_COSTS,
 	PERFECT_METER_MAX,
 } from './Constants.js';
+import { Renderer } from './Renderer.js';
 
 export class Player {
 	/**
@@ -49,6 +50,7 @@ export class Player {
 		this.dashCooldown = 0;
 		this.dashCooldownTime = 2.5;
 		this.dashDirection = { x: 0 };
+		this.facingDirection = this.id === 1 ? -1 : 1;
 		this.pushInvulnerable = false;
 
 		// Ability slots and resource thresholds
@@ -115,6 +117,7 @@ export class Player {
 			this.freezeTimer -= deltaTime;
 			if (this.freezeTimer <= 0) {
 				this.frozen = false;
+				this.snowflakeOverlay = false;
 				this.freezeTimer = 0;
 			}
 		}
@@ -176,12 +179,13 @@ export class Player {
 			if (!this.dashing && this.dashCooldown <= 0) {
 				// Start from current movement keys to derive dash axis
 				let dashX = 0;
+
 				if (inputManager.isKeyPressed(keys.left)) dashX = -1;
 				if (inputManager.isKeyPressed(keys.right)) dashX = 1;
 
-				// Fallback direction when no input is held
+				// Si este frame no ve input, usa la última dirección real
 				if (dashX === 0) {
-					dashX = this.id === 1 ? -1 : 1;
+					dashX = this.facingDirection;
 				}
 
 				this.dashDirection = { x: dashX };
@@ -218,6 +222,7 @@ export class Player {
 			}
 
 			if (moveDir !== 0) {
+				this.facingDirection = moveDir;
 				this.x += moveDir * moveSpeed * deltaTime;
 			}
 		}

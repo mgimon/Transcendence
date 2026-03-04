@@ -23,11 +23,13 @@ export class InputManager {
 
 		// Keyboard handlers
 		this.keydownHandler = (e) => {
+			if (this._isBlockedInSinglePlayer(e.code)) return;
 			this.keys.add(e.code);
 			this.keysPressed.add(e.code);
 		};
 
 		this.keyupHandler = (e) => {
+			if (this._isBlockedInSinglePlayer(e.code)) return;
 			this.keys.delete(e.code);
 		};
 
@@ -52,6 +54,18 @@ export class InputManager {
 		} else {
 			this.mobileInput = null;
 		}
+	}
+
+	_isBlockedInSinglePlayer(code) {
+		if (!this.isSinglePlayer) return false;
+
+		this.player2KeySet = new Set([
+			'ArrowLeft',
+			'ArrowRight',
+			'ControlRight',
+			'ShiftRight'
+		]);
+		return this.player2KeySet.has(code);
 	}
 
 	/**

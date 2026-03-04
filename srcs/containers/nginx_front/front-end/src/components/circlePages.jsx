@@ -120,7 +120,7 @@ export function GameConfig({ game, hasStarted, setHasStarted }) {
 	game.startGame(p1, p2)
 	setHasStarted?.(true)
 	console.log("Game touch device: ", game.isTouchDevice)
-  }
+}
 
   if (hasStarted) return null
 
@@ -282,11 +282,16 @@ export function GameConfig({ game, hasStarted, setHasStarted }) {
 
 					<div className="flex flex-col gap-2 md:gap-5 lg:gap-3 xl:gap-7">
 					  {/* Abilities */}
-					  <ConfigSection title="Abilities">
-						<ToggleOption
-						  active={abilitiesEnabled}
-						  onClick={() => setAbilitiesEnabled(true)}
-						  label="ON"
+					  {game.isTouchDevice ? (
+						<ConfigSection title="Abilities">
+						  <span className="font-corben text-shell text-[6px] md:text-[8px] xl:text-[12px]">Disabled on touch devices</span>
+						</ConfigSection>
+					  ) : (
+						<ConfigSection title="Abilities">
+						  <ToggleOption
+							active={abilitiesEnabled}
+							onClick={() => setAbilitiesEnabled(true)}
+							label="ON"
 						/>
 						<ToggleOption
 						  active={!abilitiesEnabled}
@@ -294,6 +299,7 @@ export function GameConfig({ game, hasStarted, setHasStarted }) {
 						  label="OFF"
 						/>
 					  </ConfigSection>
+					  )}
 				   
 					  {/* Player colors */}
 					  <div className="flex flex-col items-center gap-0.5">
