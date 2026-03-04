@@ -74,12 +74,14 @@ export function ChangeName({setData, setScreenProfile}){
                             placeholder="New Username"
                             value={userName}
                             onChange={(e) => setUserName(e.target.value)}
+                            autoComplete="off"
                             className="!static"
                         />
                         <PlaceholderInput
                             placeholder="New Username confirmation"
                             value={repeatUsername}
                             onChange={(e) => setRepeatUsername(e.target.value)}
+                            autoComplete="off"
                             className="!static"
                         />
                         <button type="submit" className="pt-4 md:pt-10">
@@ -155,6 +157,7 @@ export function ChangePassword({setScreenProfile}){
                             placeholder="Actual Password"
                             value={actualPassword}
                             onChange={(e) => setActualPassword(e.target.value)}
+                            autoComplete="current-password"
                             className="!static"
                         />
                         <PlaceholderInput
@@ -162,6 +165,7 @@ export function ChangePassword({setScreenProfile}){
                             placeholder="New Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            autoComplete="off"
                             className="!static"
                         />
                         <PlaceholderInput
@@ -169,6 +173,7 @@ export function ChangePassword({setScreenProfile}){
                             placeholder="New Password confirmation"
                             value={repeatPassword}
                             onChange={(e) => setRepeatPassword(e.target.value)}
+                            autoComplete="off"
                             className="!static"
                         />
                         <button type="submit" className="pt-4 md:pt-10">

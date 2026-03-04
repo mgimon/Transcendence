@@ -166,7 +166,8 @@ export function GameConfig({ game, hasStarted, setHasStarted }) {
 					placeholder="Player 1 name"
 					value={player1Name}
 					onChange={(e) => setPlayer1Name(e.target.value.slice(0, 10))}
-				  className="flex justify-center items-center top-[23%]"
+					autoComplete="off"
+				    className="flex justify-center items-center top-[23%]"
 				/>
 				<button className="flex justify-center items-center">
 				  <CenterText
@@ -250,6 +251,7 @@ export function GameConfig({ game, hasStarted, setHasStarted }) {
 					placeholder="Player 2 name"
 					value={player2Name}
 					onChange={(e) => setPlayer2Name(e.target.value.slice(0, 10))}
+					autoComplete="off"
 					className="bottom-[25%] truncate"
 				  />
 				)}
@@ -446,6 +448,7 @@ export function SignIn({setScreen}){
         placeholder="Username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
+		autoComplete="username"
         className="top-1/4"
       />
       <PlaceholderInput
@@ -453,6 +456,7 @@ export function SignIn({setScreen}){
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+		autoComplete="current-password"
         className="bottom-1/4"
       />
       <CorbenRegular
@@ -542,6 +546,7 @@ export function CreateAccount({setScreen}){
 		placeholder="Username"
 		value={username}
 		onChange={(e) => setUsername(e.target.value)}
+		autoComplete="username"
 		className="top-[16%]  md:top-[14%]"
 	  />
 	  <PlaceholderInput
@@ -549,6 +554,7 @@ export function CreateAccount({setScreen}){
 		placeholder="Email"
 		value={email}
 		onChange={(e) => setEmail(e.target.value)}
+		autoComplete="email"
 		className="top-1/4"
 	  />
 	  <PlaceholderInput
@@ -556,6 +562,7 @@ export function CreateAccount({setScreen}){
 		placeholder="Password"
 		value={password}
 		onChange={(e) => setPassword(e.target.value)}
+		autoComplete="off"
 		className="bottom-1/4"
 	  />
 	  <PlaceholderInput
@@ -563,6 +570,7 @@ export function CreateAccount({setScreen}){
 		placeholder="Repeat password"
 		value={repeatPassword}
 		onChange={(e) => setRepeatPassword(e.target.value)}
+		autoComplete="off"
 		className=" bottom-[16%] md:bottom-[14%]"
 	  />
 	  <button type="submit" className="flex justify-center items-center">

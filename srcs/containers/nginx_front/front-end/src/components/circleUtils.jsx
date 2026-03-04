@@ -41,13 +41,14 @@ export function CenterText({text, onClick, className = "", interactive = true}){
 }
 
 
-export function PlaceholderInput({placeholder, className = "", value, onChange, type}){
+export function PlaceholderInput({placeholder, className = "", value, onChange, type, autoComplete}){
   return(
     <input
       type={type}
       placeholder={placeholder}
       value={value}
       onChange={onChange}
+      autoComplete={autoComplete}
       className={`
         absolute cursor-text
         font-Corben
@@ -72,9 +73,10 @@ export function CirclePlaceholder({ placeholder, className = "", value, onChange
     <div
       className="relative w-[190px] h-[190px] md:w-[350px] md:h-[350px] lg:w-[320px] lg:h-[320px] xl:w-[450px] xl:h-[450px] rounded-full bg-greyish flex items-center justify-center overflow-hidden">
       <textarea
-        // type={type}
+        type={type}
         placeholder={placeholder}
         value={value}
+        autoComplete="off"
         onChange={(e) => {
           if (e.target.value.length <= 300) onChange(e);
         }}
@@ -88,6 +90,7 @@ export function CirclePlaceholder({ placeholder, className = "", value, onChange
           text-[10px] md:text-base
           resize-none overflow-auto
           bg-transparent border-none outline-none
+          ${className}
         `}
         style={{
           lineHeight: "1.2em",

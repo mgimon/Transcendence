@@ -48,6 +48,7 @@ export default function LoginForm({ center = false }) {
           placeholder="Username"
           required
           value={username}
+          autoComplete="username"
           onChange={(e) => setUsername(e.target.value)}
           className="px-2 py-1 rounded border border-black/40 text-sm"
         />
@@ -57,6 +58,7 @@ export default function LoginForm({ center = false }) {
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          autoComplete="current-password"
           className="px-2 py-1 rounded border border-black/40 text-sm"
         />
       </div>

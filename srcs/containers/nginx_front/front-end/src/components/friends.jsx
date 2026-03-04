@@ -6,7 +6,8 @@ import { Circle, PlaceholderInput } from './circleUtils.jsx'
 import { AlertMessage, OptionAlert } from "../services/alertMessage"
 import { Sixtyfour, P, H2, H3, LI, UL, CorbenRegular } from "./typography"
 
- function Button({text, onClick, src}){
+
+function Button({text, onClick, src}){
     return(
         <button className="group relative flex flex-col items-center gap-1 " onClick={onClick}>
             <img src={src} alt="button icon" className="w-4 h-auto" />
@@ -15,75 +16,94 @@ import { Sixtyfour, P, H2, H3, LI, UL, CorbenRegular } from "./typography"
     )
 }
 
+
 function RequestCard({request, onDelete, children, onAccept}) {
   return (
-      <div className="p-6 text-center border rounded-xl border-greyish relative ">
+      <div className="p-6 text-center h-1/2 border rounded-xl border-greyish relative ">
        
-        <div className="flex items-center relative w-full justify-center ">
-            <Sixtyfour>{children}</Sixtyfour>
+        <div className="flex items-center relative w-full justify-center">
+            <Sixtyfour className="text-[0.6rem] md:text-base">{children}</Sixtyfour>
         </div>
 
-      {(request.length === 0) && <div><P>No request to confirm</P></div>}
-      {request && request.map((friendship) => {
-        return (
-          <div key={friendship.id} className="flex items-center justify-between py-2">
-            <div className="flex items-center gap-3">
-              <ProfilePicture
-                src={friendship.avatar}
-                className="w-8 h-8"
-              />
-              <P className="">{friendship.username}</P>
-            </div>
-            <div className="flex gap-10 w-56 justify-end">
-             <Button
-              text="accept invitation"
-              onClick={() => onAccept(friendship.id)}
-              src="/validation_icons/V_bold_cut.svg"
-             />
-            <Button
-              text="decline invitation"
-              onClick={() => onDelete(friendship.id)}
-              src="/validation_icons/X_bold_cut.svg"
-            />
-            </div>
+      {(request.length === 0) && 
+        <div className="flex h-full justify-center items-center">
+          <P>No request to confirm</P>
         </div>
-        )
-      })}
+      }
+      
+      {request && request.length > 0 && (
+        <div className="h-full overflow-y-auto">
+          {request.map((friendship) => {
+            return (
+              <div key={friendship.id} className="flex items-center justify-between lg:py-2">
+                <div className="flex items-center pb-5 gap-1 lg:gap-3">
+                  <ProfilePicture
+                    src={friendship.avatar}
+                    className="w-8 h-8"
+                  />
+                  <P className="">{friendship.username}</P>
+                </div>
+                <div className="flex w-20 lg:w-56 items-center justify-end">
+                  <Button
+                    text="accept invitation"
+                    onClick={() => onAccept(friendship.id)}
+                    src="/validation_icons/V_bold_plain.svg"
+                  />
+                  <Button
+                    text="decline invitation"
+                    onClick={() => onDelete(friendship.id)}
+                    src="/validation_icons/X_bold_plain.svg"
+                  />
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }
 
 function PendingCard({pending, onDelete, children}) {
   return (
-    <div className="p-6 text-center border rounded-xl border-greyish relative ">
-        <div className="flex items-center relative w-full justify-center ">
-            <Sixtyfour>{children}</Sixtyfour>
+    <div className="p-6 text-center h-1/2 border rounded-xl border-greyish relative ">
+        <div className="flex items-center relative w-full justify-center">
+            <Sixtyfour className="text-[0.6rem] md:text-base">{children}</Sixtyfour>
         </div>
 
-      {(pending.length === 0) && <div><P>No pending confirmation</P></div>}
-      {pending && pending.map((friendship) => {
-        return (
-          <div key={friendship.id} className="flex items-center justify-between py-2">
-            <div className="flex items-center gap-3">
-              {(children === "Friends list") && (<span
-                className={`w-2 h-2 rounded-full ${
-                friendship.online_status ? 'bg-greenish' : 'bg-brightRed'
-               }`}
-              ></span>)}
-              <ProfilePicture
-                src={friendship.avatar}
-                className="w-8 h-8"
-              />
-              <P className="">{friendship.username}</P>
-            </div>
-            <Button
-              text="cancel invitation"
-              onClick={() => onDelete(friendship.id)}
-              src="/validation_icons/X_bold_cut.svg"
-            />
+      {(pending.length === 0) &&
+        <div className="flex h-full justify-center items-center">
+          <P>No pending confirmation</P>
         </div>
-        )
-      })}
+      }
+
+      {pending && pending.length > 0 && (
+        <div className="h-full overflow-y-auto">
+          {pending.map((friendship) => {
+            return (
+              <div key={friendship.id} className="flex items-center justify-between lg:py-2">
+                <div className="flex items-center pb-5 gap-1 lg:gap-3">
+                  {(children === "Friends list") && (<span
+                    className={`w-2 h-2 rounded-full ${
+                    friendship.online_status ? 'bg-greenish' : 'bg-brightRed'
+                  }`}
+                  ></span>)}
+                  <ProfilePicture
+                    src={friendship.avatar}
+                    className="w-8 h-8"
+                  />
+                  <P className="">{friendship.username}</P>
+                </div>
+                <Button
+                  text="cancel invitation"
+                  onClick={() => onDelete(friendship.id)}
+                  src="/validation_icons/X_bold_plain.svg"
+                />
+            </div>
+            )
+          })}
+      </div>
+    )}
     </div>
   )
 }
@@ -91,42 +111,49 @@ function PendingCard({pending, onDelete, children}) {
 function FriendsCard({ friends, onDelete, children, setScreenProfile }) {
 
   return (
-    <div className="p-6 text-center border rounded-xl border-greyish relative ">
-        <div className="relative w-full mb-4">
-            <Sixtyfour className="absolute left-1/2 transform -translate-x-1/2">{children}</Sixtyfour>
-          <div className="absolute right-0">
-              <Button
+    <div className="p-6 text-center h-full border rounded-xl overflow-hidden border-greyish relative ">
+        <div className="flex justify-center w-full">
+            <Sixtyfour className="text-[0.6rem] md:text-base">{children}</Sixtyfour>
+            <Button
                   text="Add friend"
                   onClick={() =>setScreenProfile("addFriend")}
                   src="/validation_icons/+_bold_plain_yellow.svg"
-              />
-          </div>
-        </div>
-      {(friends.length === 0) && <div><P>No friends to display, add your first one..!</P></div>}
-      {friends && friends.map((friendship) => {
-        return (
-          <div key={friendship.id} className="flex items-center justify-between py-2">
-            <div className="flex items-center gap-3">
-              <span
-                className={`w-2 h-2 rounded-full ${
-                friendship.online_status ? 'bg-green-700' : 'bg-red-600'
-               }`}
-              ></span>
-              <ProfilePicture
-                src={friendship.avatar}
-                className="w-8 h-8"
-              />
-              <P className="">{friendship.username}</P>
-            </div>
-            
-            <Button
-              text="delete friendship"
-              onClick={() => onDelete(friendship.id)}
-              src="/validation_icons/X_bold_cut.svg"
             />
         </div>
-        )
-      })}
+      {(friends.length === 0) &&
+        <div className="flex h-full justify-center items-center">
+          <P>No friends to display, add your first one..!</P>
+        </div>
+      }
+
+      {friends && friends.length > 0 && (
+        <div className="h-full overflow-y-auto">
+          {friends && friends.map((friendship) => {
+            return (
+              <div key={friendship.id} className="flex items-center justify-between lg:py-2">
+                <div className="flex items-center pb-5 gap-1 lg:gap-3">
+                  <span
+                    className={`w-2 h-2 rounded-full ${
+                    friendship.online_status ? 'bg-green-700' : 'bg-red-600'
+                  }`}
+                  ></span>
+                  <ProfilePicture
+                    src={friendship.avatar}
+                    className="w-8 h-8"
+                  />
+                  <P className="">{friendship.username}</P>
+                </div>
+                
+                <Button
+                  text="delete friendship"
+                  onClick={() => onDelete(friendship.id)}
+                  src="/validation_icons/X_bold_cut.svg"
+                />
+            </div>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }
@@ -176,9 +203,9 @@ function AddFriend({setScreenProfile, setPending}) {
             <PlaceholderInput
                   type="text" 
                   placeholder="Type your friend's username"
-                  
                   onChange={(e) => setUsername(e.target.value)}
                   className="!static"
+                  autoComplete="username"
             />
             <button type="submit" className="pt-4 md:pt-10">
                 <IconText text="Send invitation" className="opacity-100 cursor-pointer" />
@@ -282,17 +309,17 @@ function AddFriend({setScreenProfile, setPending}) {
   const [screenProfile, setScreenProfile] = useState("friends");
 
   return (
-    <div className="flex flex-col relative w-full h-full justify-center items-center min-h-0 ">
+    <div className="flex flex-col relative w-full h-full justify-center items-center">
       <div className="absolute inset-0">
           <IconsOverlayFrame />
       </div>
 
-      <div className="flex gap-6 h-full">
-        <div className="flex flex-col gap-2 flex-1">
+      <div className="flex flex-col lg:flex-row gap-2 lg:gap-6 h-full w-full px-3 py-5 lg:px-8 lg:py-12">
+        <div className="flex flex-col h-1/2 lg:h-full gap-2 lg:pb-2 flex-1">
           <RequestCard request={ requests } onDelete={deleteFriendship} onAccept={acceptFriend}>Request confirmation</RequestCard>
           <PendingCard pending={ pending } onDelete={deleteFriendship}>Pending</PendingCard>
         </div>
-        <div className="flex-1">
+        <div className="flex-1 h-1/2 lg:h-full pt-2 lg:pt-0">
           <FriendsCard friends={ friends } onDelete={deleteFriendship} setScreenProfile={setScreenProfile}>Friends list</FriendsCard>
         </div>
         {screenProfile === "addFriend" && (
