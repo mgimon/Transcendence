@@ -23,11 +23,13 @@ export class InputManager {
 
 		// Keyboard handlers
 		this.keydownHandler = (e) => {
+			if (this._isBlockedInSinglePlayer(e.code)) return;
 			this.keys.add(e.code);
 			this.keysPressed.add(e.code);
 		};
 
 		this.keyupHandler = (e) => {
+			if (this._isBlockedInSinglePlayer(e.code)) return;
 			this.keys.delete(e.code);
 		};
 
@@ -42,16 +44,47 @@ export class InputManager {
 			typeof window !== "undefined" &&
 			("ontouchstart" in window || navigator.maxTouchPoints > 0);
 
-		if (supportsTouch && this.target) {
-			this.mobileInput = new MobileInputController({
-				targetElement: this.target,
-				isSinglePlayer: this.isSinglePlayer,
-				simulateKeyPress: (code) => this.simulateKeyPress(code),
-				simulateKeyRelease: (code) => this.simulateKeyRelease(code),
-			});
-		} else {
+		// if (supportsTouch && this.target) {
+		// 	this.mobileInput = new MobileInputController({
+		// 		targetElement: this.target,
+		// 		isSinglePlayer: this.isSinglePlayer,
+		// 		simulateKeyPress: (code) => this.simulateKeyPress(code),
+		// 		simulateKeyRelease: (code) => this.simulateKeyRelease(code),
+		// 	});
+		// } else {
 			this.mobileInput = null;
+		// }
+	}
+
+	enableMobileControls() {
+		if (!this.mobileInput && this.target) {
+		this.mobileInput = new MobileInputController({
+			targetElement: this.target,
+			isSinglePlayer: this.isSinglePlayer,
+			simulateKeyPress: (code) => this.simulateKeyPress(code),
+			simulateKeyRelease: (code) => this.simulateKeyRelease(code),
+		});
 		}
+	}
+
+	disableMobileControls() {
+		if (this.mobileInput) {
+		this.mobileInput.destroy();
+		this.mobileInput = null;
+		}
+	}
+	
+
+	_isBlockedInSinglePlayer(code) {
+		if (!this.isSinglePlayer) return false;
+
+		this.player2KeySet = new Set([
+			'ArrowLeft',
+			'ArrowRight',
+			'ControlRight',
+			'ShiftRight'
+		]);
+		return this.player2KeySet.has(code);
 	}
 
 	/**
