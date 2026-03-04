@@ -112,7 +112,7 @@ In the end we decided to divide it like so:
 
 - Frontend design and implementation --- Emilie
 - System design and Docker management --- Marta
-- Backend user logic, including database structure --- Cléo
+- Backend user logic, including database structure & API --- Cléo
 - Game creation with AI oponent and customization --- Cristina
 - Authentication, sessions and user management system --- Manu
 
@@ -222,9 +222,10 @@ When a user is deleted from the user table, all friendships associated with that
 
 ###  MAJOR | Use a framework for both the frontend and backend (2p)
 We felt that chosing frameworks would help a lot in the frontend and the backend taking into account the architecture of microservices that we wanted to buildand the use of frameworks is strictly necessary in a company environment, so even though they were new to most of us, we felt that it was a good investment.
+
 ##### Implementation
 For the frontend we chose **React** & for the backend **Fastify**.\
-Emilie designed the frontend having the React components in mind while Cristina worked on the game in the front in pure Javascript.\
+Emilie designed the frontend having the React components in mind while Cristina worked on the game in the front in pure Javascript. She choose REACT because is the most widely used frontend library in the professional environment and there is many of informations & website with components and specific features, quite easy to use and very reusable system\
 In the backend, Manu and Cléo both learned how to use Fastify to create and manage the API routes.
 
 <br>
@@ -313,24 +314,84 @@ We implemented a complete Two-Factor Authentication system using email-based ver
 Given that we chose the frontend framework module, and Emilie learned how React components work, we thought that designing reusable 10 components was something within our capabilities.
 
 ##### Implementation
-(To be completed by @EmilieInData)
+**Emilie** created a large list of reusable modules for this project, which she believe is the best way to make good use of React and its strengths! She also used this system for the implementation of typography. 
+
+#typography.jsx\
+01.SixtyFour({children, className = "", onClick})\
+02.CorbenBold({children, className = ""})\
+03.CorbenRegular({children, className = "", onClick})\
+04.P({children})\
+05.H4({children})\
+06.H3({children})\
+07.H2({children})\
+08.LI({children})\
+09.UL({children})
+
+#icon.jsx\
+10.Icon(props)
+
+#footer.jsx\
+11.FooterButton({text, onClick})
+
+#circleUtils.jsx\
+12.Circle({children, className=""})\
+13.SmallCircle()\
+14.CenterText({text, onClick, className = "", interactive = true})\
+15.PlaceholderInput({placeholder, className = "", value, onChange, type, autoComplete})
+
+#iconUtils.jsx\
+16.IconText({text, className=""})\
+17.Icon(props)\
+18.IconsOverlayFrame()\
+19.ProfilePicture({src, className=""})\
+20.ChopstickButton({text, onClick})\
+21.OverlayPage({children, onClose})\
+22.DisplayDate(string)\
+23.DisplayIcon({children, avatar, setAvatar})\
+24.LargeButton({children, onClick})
+
+#friends.jsx\
+25.Button({text, onClick, src})\
+
+-->footer\
+-->header\
+-->content
+
+For colours, she created variables in the Tailwind index, one part based on colours from the Tailwind range and another part with hexadecimal colour codes.
+
+shell "#FFFEF4" -> CREATED\
+yellowish "#FDD28B" -> CREATED\
+palePink "#E8B0A3" -> CREATED\
+greyish "#C8C6B8" -> CREATED\
+greenish: "#719a79" -> CREATED
+
+brightRed -> red-600 -> from Tailwind\
+darkRed -> red-900 -> from Tailwind
 
 <br>
 
 ### MINOR | A complete notification system for all creation, update, and deletion actions (1p)
-(to be completed)
+
+##### Implementation
+**Emilie** chose to use SweetAlert2 to create attractive alerts for all phases of the project. It's a JavaScript library that allows you to create attractive, customisable pop-up windows/alerts and notifications. It's easy to install with NPM!
 
 <br>
 
-### :green_book: Total point count - 16 points
-With these modules we have the 14 mandatory points and 2 extra, just in case we fail any of them during evaluation.
+#### MINOR | Support for additional browsers (1p) - EMILIE
+
+##### Implementation
+**Emilie** , the website was tested and validated on Google Chrome, Mozilla Firefox, and Brave to ensure cross-browser compatibility and a consistent user experience. Chrome, was used as the reference browser during development.
+
+Chrome and Brave share the Chromium engine and offer almost identical compatibility for CSS rendering and JavaScript execution. Brave is faster thanks to tracker blocking but consumes more RAM. He blocks third-party cookies, unlike the other two.
+Mozilla Firefox uses the Gecko engine, making it the only one to offer specific tools for CSS Grid, facilitating the debugging of complex layouts. Although standardised, pixel rounding and alignment may vary slightly between the Chromium and Gecko (Firefox) engines.
+
+All core features remain fully functional across all supported browsers, ensuring a consistent user experience.
 
 <br>
 
-### BONUS modules / yet to decide
+### :green_book: Total point count - 17 points
+With these modules we have the 14 mandatory points and 3 extra, just in case we fail any of them during evaluation.
 
-####  MINOR | User activity analytics and insights dashboard (1p) - EMILIE + CLÉO
-####  MINOR | Support for additional browsers (1p) - EMILIE
 
 <br>
 
@@ -544,6 +605,35 @@ The main challenge was the integration with the frontend, which required constan
 - Game UI design
 - Input validation (frontend)
 - User experience flow
+
+As a product owner,  my principal objectiv was to define a precise vision of the project, especially focus to the design part. As the front-designer developer of the project, it was quite natural for me to commit myself to the PO role. 
+With my professional experience, I already devellop a palet of organisational skills useful for the position :
+
+→ define project vision and objectivs
+→ prioritize tasks between team members
+→ manage backlog
+→ express users & clients needs (here 42 subject)
+→ validate the website and all his options to make sure that it adds maximum value to the project
+→ ensuring a good customer experience
+
+To help me in that task, I began the project with differents models I created in Figma. We choose with all team members our favorite visual and I created all the differents pages related based on this model.
+
+During all the project development, we met every week to ensure good progresses and consistency on our differents parts. Since the beginning we work on the same website, with differents Github branches of course, to avoid any final connexions troubles.
+
+Another very important part of the project was managing the responsiveness of the site with Tailwind breakpoints, which is not so easy to do. We chose these four formats for all our tests:
+
+mobile -> 320/375 -> Iphone SE\
+sm → 640px\
+md → 768px ->Ipad Mini\
+lg → 1024px -> nest Hub\
+xl → 1280px -> nest Hub max (our screen)\
+
+--> mobile, md & xl (& lg for personal use)
+
+I was especially implicated in the design part, as an ex-fashion designer it was amazing and really important for me to propose a project with a true design vision.
+All the team enjoyed working on this Vintage Japonese Botanical theme and enriched the project with their ideas!
+→ [figma project](https://www.figma.com/site/eAmGTsUXKVOWK3iayg7CO8/Transcendance?node-id=0-1&t=pvRTo1eR0cpAlGys-1).
+
 
 #### Cristina – Game Logic & AI
 - Blossom Clash gameplay implementation
