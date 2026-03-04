@@ -1,7 +1,6 @@
 import {useState, useEffect} from "react"
 import {Circle, CenterText, PlaceholderInput} from "./circleUtils.jsx"
 import {Sixtyfour, CorbenBold, CorbenRegular} from "./typography.jsx"
-// import { Login, Register, Logout, getUserInfo } from "../services/authService"
 import {AlertMessage} from "../services/alertMessage"
 import {useAuth} from "../services/authProvider"
 
