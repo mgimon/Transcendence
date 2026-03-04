@@ -59,10 +59,10 @@ async function login(req, reply) {
 
     if (!username || !password) return reply.code(400).send({ error: 'Invalid credentials' });
 
-    const coincidence = await fetch('https://user-service:3000/user/login',
+    const coincidence = await fetch('https://user-service:3000/user/trylogin',
     {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-api-key': readSecret(process.env.API_KEY) },
       body: JSON.stringify({ username, password })
     });
 
@@ -142,7 +142,7 @@ async function logout(req, reply) {
     const logoutRes = await fetch('https://user-service:3000/user/logout',
     {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-api-key': readSecret(process.env.API_KEY) },
       body: JSON.stringify({ username })
     });
     const resValues = await logoutRes.json();
@@ -175,7 +175,7 @@ async function register2FA(req, reply) {
 
     const coincidence = await fetch('https://user-service:3000/', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-api-key': readSecret(process.env.API_KEY) },
       body: JSON.stringify({ username, password, email })
     });
     const resValues = await coincidence.json();
@@ -215,6 +215,21 @@ async function register(req, reply) {
       return reply.code(400).send({ error: 'Invalid credentials' });
     }
 
+    if (checkActiveSession(req))
+      return reply.code(403).send({ error: 'There is an active session' });
+
+    // check if mail exists
+    const coincidence = await fetch(`https://user-service:3000/user/${email}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': readSecret(process.env.API_KEY) }
+    });
+    const response = await coincidence.json();
+    if (!coincidence.ok)
+      return reply.code(coincidence.status).send({ error: "Email check failed" });
+    if (response.exists)
+      return reply.code(409).send({ error: "User email already exists" });
+
+
     const code2FA = Math.floor(100000 + Math.random() * 900000).toString();
     pending2FA.set(username, { 
       code: code2FA,
@@ -251,7 +266,7 @@ async function validate(req, reply) {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'api-key': readSecret(process.env.API_KEY)
+            'x-api-key': readSecret(process.env.API_KEY)
           },
           body: JSON.stringify({ userId: lastUserId })
         });
@@ -264,7 +279,7 @@ async function validate(req, reply) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'api-key': readSecret(process.env.API_KEY)
+        'x-api-key': readSecret(process.env.API_KEY)
       },
       body: JSON.stringify({ userId: decoded.userId })
     });
@@ -319,6 +334,19 @@ async function deletecookie(req, reply) {
     return reply.code(200).send();
 }
 
+async function activesession(req, reply) {
+  try {
+    const token = req.cookies.access_token;
+
+    if (!token)
+      return reply.code(200).send({ valid: false });
+    else
+      return reply.code(200).send({ valid: true });
+  } catch (err) {
+    return reply.code(400).send({ valid: false, message: "Bad Request" });
+  }
+}
+
 export default {
     readSecret,
     status,
@@ -331,5 +359,6 @@ export default {
     register,
     validate,
     updateUsername,
-    deletecookie
+    deletecookie,
+    activesession
 }

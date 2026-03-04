@@ -117,6 +117,24 @@ async function deleteAvatar(userId) {
         ))
 }
 
+
+async function userMailExists(mail) {
+    
+    const rows = await db.connection(conn => conn.query(
+      `SELECT 1
+       FROM users
+       WHERE email = ?
+       LIMIT 1`,
+      [mail]
+    ));
+  
+    if (rows.length > 0)
+      return true;
+    else
+      return false;
+}
+
+
 export default { 
     getAllUsers, 
     addUser, 
@@ -128,5 +146,6 @@ export default {
     updateUserById,
     deleteUserById,
     uploadAvatar,
-    deleteAvatar
+    deleteAvatar,
+    userMailExists
 }

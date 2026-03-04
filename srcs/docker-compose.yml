@@ -12,8 +12,11 @@ services:
      - cert-generator
     volumes:
       - certs_volume:/certs:ro
+    secrets:
+      - api_key
     environment:
       NODE_EXTRA_CA_CERTS: /certs/ca.crt
+      API_KEY: /run/secrets/api_key
     networks:
       - front
       - back

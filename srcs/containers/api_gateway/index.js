@@ -15,6 +15,10 @@ const app = Fastify({
 // la opcion 'logger: true' muestra logs de incoming requests, redirecciones y codigos de respuesta 
 // la opcion 'trustproxy: true' confia que el proxy(nginx o vite) viene con https
 
+function readSecret(path) {
+  return fs.readFileSync(path, 'utf8').trim()
+}
+
 app.register(rateLimit, {
   max: 300,               
   timeWindow: "1 minute",
@@ -34,6 +38,10 @@ app.register(proxy, {
   upstream: "https://user-service:3000",
   prefix: "/api/users",
   rewritePrefix: "/",
+  preHandler: async (request, reply) => {
+    request.headers['x-api-key'] = readSecret(process.env.API_KEY);
+  },
+  rewritePrefix: "/",
   https: internalHttpsOptions
 });
 
@@ -41,6 +49,9 @@ app.register(proxy, {
   upstream: "https://user-service:3000",
   prefix: "/uploads",
   rewritePrefix: "/uploads",
+  preHandler: async (request, reply) => {
+    request.headers['x-api-key'] = readSecret(process.env.API_KEY);
+  },
   https: internalHttpsOptions
 });
 

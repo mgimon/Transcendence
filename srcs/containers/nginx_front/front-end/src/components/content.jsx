@@ -1,5 +1,5 @@
 import {IconsList} from "./iconUtils"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import GameContainer from "./gameContainer"
 import {PlayConnected, PlayNotConnected, SignIn, CreateAccount, GameConfig, GameReset} from "./circlePages.jsx"
 import {Project} from "./projectPage.jsx"
@@ -21,11 +21,11 @@ export default function Content({screen, setScreen}){
         }
     }, [screen]);
 
-    const onGameReady = (gameInstance) => {
+    const onGameReady = useCallback((gameInstance) => {
         setGame(gameInstance);
         gameInstance?.setOnBackToMenu?.(() => setHasStarted(false));
         gameInstance?.setOnGameEnd?.(() => setScreen("gameReset"));
-    };
+    }, [setScreen, setHasStarted]);
 
     const handlePlayAgain = () => {
         game?.resetGame?.();
@@ -66,17 +66,3 @@ export default function Content({screen, setScreen}){
         </div>
     )
 }
-
-
-{/* <GameContainer onGameReady={setGame} /> --> need to be call inside Game config at the end to not have the white screen */}
-
-    // const [screen, setScreen] = useState("playNC")
-    // // Debug: log when game state changes
-    // useEffect(() => {
-    //   console.log('📦 Content: game state changed', {
-    //     game: game ? 'exists' : 'null',
-    //     gameState: game?.state
-    //   });
-    // }, [game]);
-
-// backdrop-blur-xs
