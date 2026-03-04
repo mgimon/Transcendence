@@ -108,9 +108,9 @@ export function CirclePlaceholder({ placeholder, className = "", value, onChange
  
   return (
     <div
-      className="relative w-[330px] h-[330px] rounded-full bg-greyish flex items-center justify-center overflow-hidden">
+      className="relative w-[190px] h-[190px] md:w-[350px] md:h-[350px] lg:w-[320px] lg:h-[320px] xl:w-[450px] xl:h-[450px] rounded-full bg-greyish flex items-center justify-center overflow-hidden">
       <textarea
-        type={type}
+        // type={type}
         placeholder={placeholder}
         value={value}
         onChange={(e) => {

@@ -371,8 +371,8 @@ export function ChangeInfo({setData, setScreenProfile}){
 
     return(
         <div className="flex flex-col relative w-full h-full justify-center items-center">
-            <Circle className="bg-shell border-2 border-greyish px-10">
-                <div className="flex flex-col pt-4 md:pt-0 lg:pt-6 xl:gap-2 justify-center items-center">
+            <Circle className="bg-shell border-2 border-greyish">
+                {/* <div className="flex flex-col pt-4 md:pt-0 lg:pt-6 xl:gap-2 justify-center items-center"> */}
                     <form
                         onSubmit={async (e) => {
                         e.preventDefault()
@@ -407,11 +407,11 @@ export function ChangeInfo({setData, setScreenProfile}){
                             onChange={(e) => setInfo(e.target.value.slice(0,300))}
                             className="!static"
                         />
-                        <button type="submit" className="absolute bottom-[8%] z-20">
+                        <button type="submit" className="absolute bottom-[12%] z-20">
                             <IconText text="Confirm change" className="opacity-100 cursor-pointer" />
                         </button>
                     </form>
-                </div>
+                {/* </div> */}
             </Circle>
         </div>
     )
