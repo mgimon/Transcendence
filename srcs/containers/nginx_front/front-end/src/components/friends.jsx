@@ -8,11 +8,9 @@ import { Sixtyfour, P, H2, H3, LI, UL, CorbenRegular } from "./typography"
 
  function Button({text, onClick, src}){
     return(
-        <button className="group relative flex items-center " onClick={onClick}>
-            <img src={src} alt="chopstick button icon" className="w-4 h-auto" />
-            <div className="absolute z-20 left-2/3 top-1/2 transform -translate-y-1/2 ml-2">
-                <IconText text={text} />
-            </div>
+        <button className="group relative flex flex-col items-center gap-1 " onClick={onClick}>
+            <img src={src} alt="button icon" className="w-4 h-auto" />
+              <IconText text={text}/>
         </button>
     )
 }
