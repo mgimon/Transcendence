@@ -81,9 +81,9 @@ const statusSchema = {
         type: 'object',
         properties: { message: { type: 'string' } }
       },
-      400: { type: 'object' },
-      401: { type: 'object' },
-      500: { type: 'object' }
+      400: { type: 'object', properties: { error: { type: 'string' } } },
+      401: { type: 'object', properties: { error: { type: 'string' } } },
+      500: { type: 'object', properties: { error: { type: 'string' } } }
     }
   };
   
@@ -146,9 +146,9 @@ const statusSchema = {
         type: 'object',
         properties: { message: { type: 'string' } }
       },
-      400: { type: 'object' },
-      401: { type: 'object' },
-      500: { type: 'object' }
+      400: { type: 'object', properties: { error: { type: 'string' } } },
+      401: { type: 'object', properties: { error: { type: 'string' } } },
+      500: { type: 'object', properties: { error: { type: 'string' } } }
     }
   };
   
@@ -216,6 +216,33 @@ const statusSchema = {
     }
   };
 
+  const activesession = {
+    description: 'Check active user session',
+    tags: ['Auth'],
+    summary: 'Verify if auth cookie exists',
+    response: {
+      200: {
+        type: 'object',
+        properties: {
+          valid: { type: 'boolean' }
+        }
+      },
+      401: {
+        type: 'object',
+        properties: {
+          valid: { type: 'boolean' }
+        }
+      },
+      400: {
+        type: 'object',
+        properties: {
+          valid: { type: 'boolean' },
+          message: { type: 'string' }
+        }
+      }
+    }
+  };
+
   export default {
     statusSchema,
     loginSchema,
@@ -225,5 +252,6 @@ const statusSchema = {
     register2FASchema,
     validateSchema,
     updateUsernameSchema,
-    deletecookie
+    deletecookie,
+    activesession
   }

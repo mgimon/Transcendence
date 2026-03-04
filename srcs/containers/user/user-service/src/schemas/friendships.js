@@ -161,7 +161,7 @@ const addAuthorizationToPlay = {
 const cancelFriendship = {
     description: 'delete a friendship, always initiate by id1 ---> to id2',
     tags: ['Friendships'],
-    summary: 'delete friendship',
+    summary: 'Delete friendship',
 
     body: twoIdBody,
 
