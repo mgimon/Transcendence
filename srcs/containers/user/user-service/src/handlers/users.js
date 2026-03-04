@@ -122,8 +122,6 @@ async function tryLogin(req, reply) {
 
         if (user.online_status === 1) userConflictError('You are already logged')
 
-        //await query.updateUserById(user.id, { online_status: 1 });
-
         return reply.code(200).send({
             valid: true,
             userId: user.id,
@@ -256,7 +254,7 @@ async function deleteAvatar(req, reply) {
 
 async function disconnect(req, reply) {
     try {
-      const apiKey = req.headers['api-key'];
+      const apiKey = req.headers['x-api-key'];
   
       if (apiKey !== readSecret(process.env.API_KEY)) {
         return reply.code(401).send({ error: "Invalid API key" });
@@ -275,7 +273,7 @@ async function disconnect(req, reply) {
 
 async function connect(req, reply) {
     try {
-      const apiKey = req.headers['api-key'];
+      const apiKey = req.headers['x-api-key'];
   
       if (apiKey !== readSecret(process.env.API_KEY)) {
         return reply.code(401).send({ error: "Invalid API key" });
@@ -292,6 +290,15 @@ async function connect(req, reply) {
     }
 }
 
+async function userMailExists(req, reply) {
+    try {
+      const email = decodeURIComponent(req.params.userMail);
+      const exists = await query.userMailExists(email);
+      reply.send({ exists });
+    } catch (error) {
+      reply.code(500).send({ error: 'Internal server error' });
+    }
+  }
   
 
 export default { 
@@ -308,5 +315,6 @@ export default {
     uploadAvatar,
     deleteAvatar,
     disconnect,
-    connect
+    connect,
+    userMailExists
 }
