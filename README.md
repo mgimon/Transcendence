@@ -633,7 +633,7 @@ During all the project development, we met every week to ensure good progresses 
 
 Another very important part of the project was managing the responsiveness of the site with Tailwind breakpoints, which is not so easy to do. We chose these four formats for all our tests:
 
-mobile -> 320/375 -> Iphone SE\
+mobile -> 320/375 -> Iphone 12 Pro\
 sm → 640px\
 md → 768px ->Ipad Mini\
 lg → 1024px -> nest Hub\
