@@ -3,7 +3,7 @@ _<p align=center> This project has been created as part of the 42 curriculum by 
 
 ### <p align=center> **ft_transcendence**</p>
  
-# <p align=center> :cherry_blossom: Blossom Clash :cherry_blossom: </p>
+# <p align=center> :cherry_blossom: Blossom Clash :cherry_blossom: </p> 
 
 ## 1. Description
 
