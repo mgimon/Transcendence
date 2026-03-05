@@ -7,7 +7,7 @@ _<p align=center> This project has been created as part of the 42 curriculum by 
 
 ## 1. Description
 
-**Blossom Clash** is a competitive multiplayer game where opponents control brush-like characters to catch falling blossoms across three lanes while physically blocking and pushing each other.
+**Blossom Clash** is a competitive multiplayer game with customizable user profiles, where opponents control brush-like characters to catch falling blossoms across three lanes while physically blocking and pushing each other.
 
 As our implementation for the final project of the 42 Common Core, the game is built on a **microservices architecture** consisting of various independent, containerized services: an **API Gateway Service** that routes requests, an **Auth Service** handling authentication and 2FA, and a **User Service** managing profiles, friendships, and data persistence with **MariaDB**. Each service runs in its own Docker container, communicates securely via HTTPS, and is fully documented with **Swagger UI**, demonstrating a production-ready approach to scalability and maintainability.
 
