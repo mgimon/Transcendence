@@ -675,7 +675,7 @@ There are 3 lanes you can move between:
 Left  |  Middle  |  Right
 
 ###### Claiming a Lane
-Catch 5 blossoms in a row in the same lane to claim it.
+Catch 3 blossoms in a row in the same lane to claim it.
 
 When you own a lane:
 * Bonus perfects
@@ -701,16 +701,16 @@ The meter empties to 0 after using an ability.
 
 ###### Perfect Meter Abilities
 
-**At 5 Perfects → Reverse Push OR Reverse input**
+**At 2 Perfects → Reverse Push OR Reverse input**
 
 Your opponent’s push turns into a pull for ~1 second OR inputs are reversed, left becomes right and right becomes left.\
 Great for lane steals, repositioning and confusing the opponent.
 
-**At 10 Perfects → Ink Freeze**
+**At 4 Perfects → Ink Freeze**
 Opponent is unable to move or push for ~0.4 seconds (maybe more).\
 Use it to secure key blossoms or shove them out.
 
-**At 15 Perfects → Momentum Surge**
+**At 6 Perfects → Momentum Surge**
 
 Your pushing force is doubled for ~1–2 seconds. This lets you dominate contested lanes, especially the middle.
 
@@ -732,7 +732,7 @@ If both players push at the same time:
 
 This preserves fairness while rewarding lane control.
 
-##### Dynamic Field Event (Might delete)
+##### Dynamic Field Event
 Only one environmental event exists:
 
 ###### Wind Gust
@@ -759,7 +759,7 @@ Golden Perfect Bonus				| +2–3 PM
 PM = Perfect Meter
 
 ##### Winning
-After two rounds of 30 seconds, total scores are compared.\
+After two rounds of 20 seconds (customizable), total scores are compared.\
 The player with the highest score wins Blossom Clash.
 <br>
 
