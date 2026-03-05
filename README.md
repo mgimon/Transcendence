@@ -18,7 +18,7 @@ The **React frontend** with Tailwind CSS provides a responsive, visually cohesiv
 ## 2. Instructions
 
 To run the project, follow these steps:  
-1. **Make sure you have Docker and Git installed on your machine** :package:
+1. **Make sure you have Docker and Git installed on your machine**
    
 2. **Clone the repository:** 
 
@@ -36,8 +36,8 @@ To run the project, follow these steps:
    Execute `make` , `make dev` or `make prod` in the cloned folder.
    
    We have 2 creation modes:
-   	- for development -> hot reload on front + back, vite server on 5173 :hammer_and_pick:
-    - for production -> recompilation is necessary to see changes, nginx server on 8080 :shield: (*default*) 
+   	- for development -> hot reload on front + back, vite server on 5173
+    - for production -> recompilation is necessary to see changes, nginx server on 8080 (*default*) 
 
 	See `make help` to get more information about each `make` command
 
@@ -46,7 +46,7 @@ To run the project, follow these steps:
 <br>
 
 
-## 3. The dream team :handshake:
+## 3. The dream team
 Our team consists of five members: Cléo Le Tron, Emilie Sellier, Manu Gimon, Cristina Manzanares and Marta López.\
 All of us are *developers* and, on top of that, three of us have other roles as well:
 
@@ -176,7 +176,7 @@ This startegy worked pretty well for us.
 ### Database system
 
 #### Schema
-![Database](readme_assets/database.png)
+
 We have decided to create two tables: one for the user's personal information and another for all friendships.
 The friendship table is related to the user table through two foreign keys referencing the user ID.
 When a user is deleted from the user table, all friendships associated with that user ID are automatically deleted as well (via cascading delete).
@@ -368,13 +368,119 @@ All core features remain fully functional across all supported browsers, ensurin
 
 <br>
 
-### :green_book: Total point count - 17 points
+### Total point count - 17 points
 With these modules we have the 14 mandatory points and 3 extra, just in case we fail any of them during evaluation.
 
 <br>
 
+## 7. Individual Contributions
 
-## 7. Features List 
+Here you can see who implemented each feature, the issues we faced, and how we solved them:
+
+#### Marta – DevOps & Architecture
+- Designed and implemented microservices architecture
+- Dockerized infrastructure (dev & prod modes)
+- HTTPS configuration and certificate automation
+- Service communication and API gateway integration
+
+My first objective as the Dev-Ops designated person was to provide a basic structure of containers for the whole team that was funcional, easy to scale, and easy for them to work on independently.
+
+In order to do that, I had to learn what was actually strictly necessary for each service to work, and then learn about the frameworks and libraries we were gonna use, and how to install and configure them properly. That's why I started creating my own mini react projects and testing how Node.js worked. It was very overwhelming in the beggining, because all of these languages and technologies were new to me as well, but after some research and tests I was able to create the following structure:
+
+    > Makefile
+	 > docker-compose.yml
+	 > srcs/
+		- nginx_front (no front logic yet, serving pure .html, would later add node and vite)
+ 		- api_gateway (node, redirecting to user & auth microservices)
+ 		- user-service (node)
+  		- auth-service (node)
+  		- user-db (mariadb)
+		
+With time, I added the React and Tailwind in the frontend, in a multi-stage Dockerfile.
+One of the things that has taken me the most time to do proprely are the two modes: DEV and PROD.
+
+From the start I only considered having the project be production-ready, but as the project grew, the files multiplied, and compiling time got longer, the front and back developers needed to work and see changes in the moment, not recompile images and wait. That was when I decided to create the DEV mode, where vite runs as server, we have hot module reload, and nodemon runs in the backend, also giving immediate updates that eliminate the need to recompile.
+
+After that, and after we connected the front with the back (which was fun to say the least), I focused more on security: docker networks, volumes, ports, secrets and HTTPS connection.
+
+#### Manu – Authentication & Security
+- Implemented 2FA authentication flow
+- JWT-based session management
+- Route protection middleware
+- Secure password handling
+
+I was tasked with the developing of the authentication service, which required implementing and maintaining a session system based on JSON Web Tokens (JWT). Since security was an important concern, the tokens were saved into HttpOnly cookies in the browser. The launch of the user authentication flow started with the 2FA. Since we needed to use the Simple Mail Transfer Protocol, we had to use a mailing provider that allowed us to send the 2FA authentication email, for which we configured a Gmail SMTP account: **theblossomclash@gmail.com**
+
+Maintaining the sessions consistency throughout the user experience in our site was the main challenge I faced. Both the back and the front had to maintain the same session truth through all the possible actions the user could make in the front: registering, deleting, logging in/out, updating, etc.
+
+#### Cléo – Backend & Database
+- Fastify backend implementation
+- MariaDB schema design
+- User service implementation
+- Swagger documentation
+  
+I started implementing the backend using Fastify, organizing the project with a clean and modular architecture by separating routes, schemas, handlers, and database queries into different files. I set up global error handling with custom responses and used schemas both for validation and as a security layer to control request and response formats.
+
+I seeded the database with realistic test data using Faker.js and implemented avatar uploads with Fastify Multipart. I also integrated Swagger UI to document and manually test all API routes.
+
+The main challenge was the integration with the frontend, which required constant adjustments to endpoints, handlers, and error management. Through iterative testing and debugging, I was able to stabilize the communication between both sides and ensure reliable API behavior.
+
+
+#### Emilie – Frontend & UI
+- React + Tailwind interface
+- Game UI design
+- Input validation (frontend)
+- User experience flow
+
+As a product owner,  my principal objectiv was to define a precise vision of the project, especially focus to the design part. As the front-designer developer of the project, it was quite natural for me to commit myself to the PO role. 
+With my professional experience, I already devellop a palet of organisational skills useful for the position :
+
+→ define project vision and objectivs
+→ prioritize tasks between team members
+→ manage backlog
+→ express users & clients needs (here 42 subject)
+→ validate the website and all his options to make sure that it adds maximum value to the project
+→ ensuring a good customer experience
+
+To help me in that task, I began the project with differents models I created in Figma. We choose with all team members our favorite visual and I created all the differents pages related based on this model.
+
+During all the project development, we met every week to ensure good progresses and consistency on our differents parts. Since the beginning we work on the same website, with differents Github branches of course, to avoid any final connexions troubles.
+
+Another very important part of the project was managing the responsiveness of the site with Tailwind breakpoints, which is not so easy to do. We chose these four formats for all our tests:
+
+	 mobile -> 320/375 -> Iphone 12 Pro
+	 sm → 640px
+	 md → 768px ->Ipad Mini
+	 lg → 1024px -> nest Hub
+	 xl → 1280px -> nest Hub max (our screen)
+
+	 --> mobile, md & xl (& lg for personal use)
+
+I was especially implicated in the design part, as an ex-fashion designer it was amazing and really important for me to propose a project with a true design vision.
+All the team enjoyed working on this Vintage Japonese Botanical theme and enriched the project with their ideas!
+→ [figma project](https://www.figma.com/site/eAmGTsUXKVOWK3iayg7CO8/Transcendance?node-id=0-1&t=pvRTo1eR0cpAlGys-1).
+
+
+#### Cristina – Game Logic & AI
+- Blossom Clash gameplay implementation
+- Collision & lane system
+- Perfect Meter & ability mechanics
+- AI opponent logic
+- Wind event implementation
+As the game developer, my main goal was to create a complete, interactive, and fun web-based game. I started by designing the core gameplay mechanics, defining how players interact, how scoring works, and the conditions for victory. This required planning a lane system to structure movement and a collision detection system to handle interactions between players, abilities, and environmental elements.
+
+Once the base gameplay was functional, I implemented the Perfect Meter and ability mechanics, allowing players to perform special actions depending on their in-game performance. This required balancing meter growth and ability effects to make gameplay fair and dynamic.
+
+Next, I focused on the AI opponent, which involved building a decision-making loop capable of predicting player movement, choosing lanes strategically, and using abilities effectively. The AI needed to operate within the same constraints as human players to ensure balanced and competitive gameplay. Integrating the AI required careful testing and iterative adjustments to make it responsive yet beatable.
+
+Finally, I added the wind event system, an environmental mechanic that affects movement and abilities. This introduced variability into each match and required updating both the player and AI movement logic to handle dynamic environmental changes.
+
+The biggest challenges were balancing gameplay for fairness, integrating AI behavior without creating glitches, and ensuring all components (player input, AI, abilities, and environmental effects) worked seamlessly together in real-time.
+
+
+<br>
+
+## 8. Features List 
 
 We'll start by listing the core gameplay features: 
 
@@ -499,113 +605,6 @@ These are the rest of the features of the project:
 - Privacy Policy page
 - Terms of Service page
 - Easily accessible in the application
-
-<br>
-
-## 8. Individual Contributions
-
-Here you can see who implemented each feature, the issues we faced, and how we solved them:
-
-#### Marta – DevOps & Architecture
-- Designed and implemented microservices architecture
-- Dockerized infrastructure (dev & prod modes)
-- HTTPS configuration and certificate automation
-- Service communication and API gateway integration
-
-My first objective as the Dev-Ops designated person was to provide a basic structure of containers for the whole team that was funcional, easy to scale, and easy for them to work on independently.
-
-In order to do that, I had to learn what was actually strictly necessary for each service to work, and then learn about the frameworks and libraries we were gonna use, and how to install and configure them properly. That's why I started creating my own mini react projects and testing how Node.js worked. It was very overwhelming in the beggining, because all of these languages and technologies were new to me as well, but after some research and tests I was able to create the following structure:
-
-    > Makefile
-	 > docker-compose.yml
-	 > srcs/
-		- nginx_front (no front logic yet, serving pure .html, would later add node and vite)
- 		- api_gateway (node, redirecting to user & auth microservices)
- 		- user-service (node)
-  		- auth-service (node)
-  		- user-db (mariadb)
-		
-With time, I added the React and Tailwind in the frontend, in a multi-stage Dockerfile.
-One of the things that has taken me the most time to do proprely are the two modes: DEV and PROD.
-
-From the start I only considered having the project be production-ready, but as the project grew, the files multiplied, and compiling time got longer, the front and back developers needed to work and see changes in the moment, not recompile images and wait. That was when I decided to create the DEV mode, where vite runs as server, we have hot module reload, and nodemon runs in the backend, also giving immediate updates that eliminate the need to recompile.
-
-After that, and after we connected the front with the back (which was fun to say the least), I focused more on security: docker networks, volumes, ports, secrets and HTTPS connection.
-
-#### Manu – Authentication & Security
-- Implemented 2FA authentication flow
-- JWT-based session management
-- Route protection middleware
-- Secure password handling
-
-I was tasked with the developing of the authentication service, which required implementing and maintaining a session system based on JSON Web Tokens (JWT). Since security was an important concern, the tokens were saved into HttpOnly cookies in the browser. The launch of the user authentication flow started with the 2FA. Since we needed to use the Simple Mail Transfer Protocol, we had to use a mailing provider that allowed us to send the 2FA authentication email, for which we configured a Gmail SMTP account: **theblossomclash@gmail.com**
-
-Maintaining the sessions consistency throughout the user experience in our site was the main challenge I faced. Both the back and the front had to maintain the same session truth through all the possible actions the user could make in the front: registering, deleting, logging in/out, updating, etc.
-
-#### Cléo – Backend & Database
-- Fastify backend implementation
-- MariaDB schema design
-- User service implementation
-- Swagger documentation
-  
-I started implementing the backend using Fastify, organizing the project with a clean and modular architecture by separating routes, schemas, handlers, and database queries into different files. I set up global error handling with custom responses and used schemas both for validation and as a security layer to control request and response formats.
-
-I seeded the database with realistic test data using Faker.js and implemented avatar uploads with Fastify Multipart. I also integrated Swagger UI to document and manually test all API routes.
-
-The main challenge was the integration with the frontend, which required constant adjustments to endpoints, handlers, and error management. Through iterative testing and debugging, I was able to stabilize the communication between both sides and ensure reliable API behavior.
-
-
-#### Emilie – Frontend & UI
-- React + Tailwind interface
-- Game UI design
-- Input validation (frontend)
-- User experience flow
-
-As a product owner,  my principal objectiv was to define a precise vision of the project, especially focus to the design part. As the front-designer developer of the project, it was quite natural for me to commit myself to the PO role. 
-With my professional experience, I already devellop a palet of organisational skills useful for the position :
-
-→ define project vision and objectivs
-→ prioritize tasks between team members
-→ manage backlog
-→ express users & clients needs (here 42 subject)
-→ validate the website and all his options to make sure that it adds maximum value to the project
-→ ensuring a good customer experience
-
-To help me in that task, I began the project with differents models I created in Figma. We choose with all team members our favorite visual and I created all the differents pages related based on this model.
-
-During all the project development, we met every week to ensure good progresses and consistency on our differents parts. Since the beginning we work on the same website, with differents Github branches of course, to avoid any final connexions troubles.
-
-Another very important part of the project was managing the responsiveness of the site with Tailwind breakpoints, which is not so easy to do. We chose these four formats for all our tests:
-
-	 mobile -> 320/375 -> Iphone 12 Pro
-	 sm → 640px
-	 md → 768px ->Ipad Mini
-	 lg → 1024px -> nest Hub
-	 xl → 1280px -> nest Hub max (our screen)
-
-	 --> mobile, md & xl (& lg for personal use)
-
-I was especially implicated in the design part, as an ex-fashion designer it was amazing and really important for me to propose a project with a true design vision.
-All the team enjoyed working on this Vintage Japonese Botanical theme and enriched the project with their ideas!
-→ [figma project](https://www.figma.com/site/eAmGTsUXKVOWK3iayg7CO8/Transcendance?node-id=0-1&t=pvRTo1eR0cpAlGys-1).
-
-
-#### Cristina – Game Logic & AI
-- Blossom Clash gameplay implementation
-- Collision & lane system
-- Perfect Meter & ability mechanics
-- AI opponent logic
-- Wind event implementation
-As the game developer, my main goal was to create a complete, interactive, and fun web-based game. I started by designing the core gameplay mechanics, defining how players interact, how scoring works, and the conditions for victory. This required planning a lane system to structure movement and a collision detection system to handle interactions between players, abilities, and environmental elements.
-
-Once the base gameplay was functional, I implemented the Perfect Meter and ability mechanics, allowing players to perform special actions depending on their in-game performance. This required balancing meter growth and ability effects to make gameplay fair and dynamic.
-
-Next, I focused on the AI opponent, which involved building a decision-making loop capable of predicting player movement, choosing lanes strategically, and using abilities effectively. The AI needed to operate within the same constraints as human players to ensure balanced and competitive gameplay. Integrating the AI required careful testing and iterative adjustments to make it responsive yet beatable.
-
-Finally, I added the wind event system, an environmental mechanic that affects movement and abilities. This introduced variability into each match and required updating both the player and AI movement logic to handle dynamic environmental changes.
-
-The biggest challenges were balancing gameplay for fairness, integrating AI behavior without creating glitches, and ensuring all components (player input, AI, abilities, and environmental effects) worked seamlessly together in real-time.
-
 
 <br>
 
@@ -807,3 +806,10 @@ Thanks for making it all the way to the end!
 Enjoy the game ;)
 
 <br>
+
+##
+
+### 🔄 You may also like...
+[-> My profile on the 42 Intranet](https://profile.intra.42.fr/users/mgimon-c)
+
+[-> My LinkedIn profile](https://www.linkedin.com/in/mgimon-c/)
