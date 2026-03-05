@@ -157,7 +157,6 @@ This startegy worked pretty well for us.
 - **OpenSSL** for SSL/TLS certificate management
 - **Swagger** for comprehensive API documentation
 - **Nodemon** for hot-reloading during development
-- **ESLint** for code quality
 
 ### Justification for Key Technical Choices
 
@@ -546,6 +545,10 @@ After that, and after we connected the front with the back (which was fun to say
 - JWT-based session management
 - Route protection middleware
 - Secure password handling
+
+I was tasked with the developing of the authentication service, which required implementing and maintaining a session system based on JSON Web Tokens (JWT). Since security was an important concern, the tokens were saved into HttpOnly cookies in the browser. The launch of the user authentication flow started with the 2FA. Since we needed to use the Simple Mail Transfer Protocol, we had to use a mailing provider that allowed us to send the 2FA authentication email, for which we configured a Gmail SMTP account: **theblossomclash@gmail.com**
+
+Maintaining the sessions consistency throughout the user experience in our site was the main challenge I faced. Both the back and the front had to maintain the same session truth through all the possible actions the user could make in the front: registering, deleting, logging in/out, updating, etc.
 
 #### Cléo – Backend & Database
 - Fastify backend implementation
