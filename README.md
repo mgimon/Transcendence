@@ -7,20 +7,11 @@ _<p align=center> This project has been created as part of the 42 curriculum by 
 
 ## 1. Description
 
-_**ft_transcendence**_ is a group project with the goal of building a real-world web application that demonstrates our ability to adapt to new technologies, collaborate effectively as a team, and deliver a functional and secure final product.
+Blossom Clash is our implementation of the final project for the 42 Common Core. 
 
-There is a lot of freedom in what this final product can look like: it can be a multiplayer game, a collaborative platform, or a social network, depending on the modules you choose. \
-There is a **mandatory** part that demands basic web functionality and security, and then we also have to comply with: 
+At its core, Blossom Clash is a competitive multiplayer game where opponents control brush-like characters to catch falling blossoms across three lanes while physically blocking and pushing each other. The game is built on a microservices architecture consisting of various independent, containerized services: an API Gateway that routes requests, an Auth Service handling authentication and 2FA, and a User Service managing profiles, friendships, and data persistence with MariaDB. Each service runs in its own Docker container, communicates securely via HTTPS, and is fully documented with Swagger UI, demonstrating a production-ready approach to scalability and maintainability.
 
- #### *the modules*
-
-They are requirements for the project that focus on very specific topics and features classified as **MAJOR** (2p) or **MINOR**(1p).\
-The complexity and length of the module influences whether it is considered a MAJOR (more difficult and long) or MINOR (easier to implement) one.
-
-> [!IMPORTANT] 
-> The minimum points you need to evaluate and pass the project is 14!
-
-Anything over 14 points is considered part of the **bonus**.
+The React frontend with Tailwind CSS provides a responsive, visually cohesive interface inspired by sumi-e ink painting aesthetics, completing a full-stack system where the backend logic is cleanly separated from the user experience. The game itself features a unique gaming system, a special-ability meter that fills with perfect catches to unlock special moves (reverse push, freeze, momentum surge), and dynamic wind events that affect blossom trajectories. It was built with vanilla JavaScript canvas for smooth 60fps gameplay, and combines fast-paced action with strategic depth.
 
 <br>
 
