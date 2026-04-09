@@ -21,6 +21,7 @@ The **React frontend** with Tailwind CSS provides a responsive, visually cohesiv
 ![Exit](assets/Transcendance(5).png)
 
 <br>
+<br>
 
 ## 2. Instructions
 
