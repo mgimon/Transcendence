@@ -13,13 +13,13 @@ As our implementation for the final project of the 42 Common Core, the game is b
 
 The **React frontend** with Tailwind CSS provides a responsive, visually cohesive interface inspired by sumi-e ink painting aesthetics, completing a full-stack system where the backend logic is cleanly separated from the user experience. The game itself features a unique **gaming system**, a special-ability meter that fills with perfect catches to unlock special moves (reverse push, freeze, momentum surge), and dynamic wind events that affect blossom trajectories. It was built with vanilla JavaScript canvas for smooth 60fps gameplay, and combines fast-paced action with strategic depth.
 
-![Play](assets/Transcendence.png)
-![Go](assets/Transcendence(1).png)
-![BlossomClash](assets/Transcendence(2).png)
-![Profile](assets/Transcendence(3).png)
-![Friends](assets/Transcendence(4).png)
-![Contacts](assets/Transcendence(5).png)
-![Exit](assets/Transcendence(6).png)
+![Play](assets/Transcendance.png)
+![Go](assets/Transcendance(1).png)
+![BlossomClash](assets/Transcendance(2).png)
+![Profile](assets/Transcendance(3).png)
+![Friends](assets/Transcendance(4).png)
+![Contacts](assets/Transcendance(5).png)
+![Exit](assets/Transcendance(6).png)
 
 <br>
 
