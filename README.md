@@ -5,6 +5,8 @@ _<p align=center> This project has been created as part of the 42 curriculum by 
  
 # <p align=center> :cherry_blossom: Blossom Clash :cherry_blossom: </p> 
 
+<br>
+
 ## 1. Description
 
 **Blossom Clash** is a competitive multiplayer game with customizable user profiles, where opponents control brush-like characters to catch falling blossoms across three lanes while physically blocking and pushing each other.
