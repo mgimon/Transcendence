@@ -16,12 +16,16 @@ The **React frontend** with Tailwind CSS provides a responsive, visually cohesiv
 <br>
 <br>
 
+![Transcendance](assets/Transcendance.gif)
+
+<!--
 ![Play](assets/Transcendance.png)
 ![Go](assets/Transcendance(1).png)
 ![Friends](assets/Transcendance(2).png)
 ![Profile](assets/Transcendance(3).png)
 ![Team](assets/Transcendance(4).png)
 ![Exit](assets/Transcendance(5).png)
+-->
 
 <br>
 
